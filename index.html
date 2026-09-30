@@ -6,7 +6,7 @@
   --background:#f4f2ee;--ink:#1d1d1b;--muted:#6d6b66;--rule:#dedad2;
   --sans:"Instrument Sans",Arial,Helvetica,sans-serif;--serif:"Instrument Serif",Georgia,serif;
   /* Book geometry. The rail is a vertical plane turned away to the right; books stand on it like dominoes. */
-  --bw:200px;--bh:292px;--step:176px;--plane:8deg;--tilt:26deg;--shelf-h:420px;
+  --bw:200px;--bh:292px;--step:218px;--plane:8deg;--tilt:-26deg;--shelf-h:420px;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--background);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
@@ -92,9 +92,9 @@ body.index .cover-bottom{margin:0}
 body.index .book:focus-visible .cover{outline-offset:0}
 body.index .collection:first-of-type .shelf{border-top:1px solid var(--rule)}
 
-@media(min-width:1500px){:root{--bw:220px;--bh:320px;--step:194px;--shelf-h:450px}.cover h3{font-size:28px}.serif .cover h3{font-size:34px}.cover-image{height:84px}}
+@media(min-width:1500px){:root{--bw:220px;--bh:320px;--step:240px;--shelf-h:450px}.cover h3{font-size:28px}.serif .cover h3{font-size:34px}.cover-image{height:84px}}
 @media(max-width:600px){
-  :root{--bw:150px;--bh:220px;--step:132px;--shelf-h:320px}
+  :root{--bw:150px;--bh:220px;--step:164px;--shelf-h:320px}
   header{height:64px;font-size:12px}
   .intro{margin-top:44px}
   .lede{font-size:16px}
@@ -156,7 +156,7 @@ function place(sh){sh.rail.style.transform=`rotateY(var(--plane)) translateX(${-
 
 function drawBook(s){
   const x=s.x;
-  s.book.style.transform=x?`translate3d(0,${(-20*x).toFixed(2)}px,${(50*x).toFixed(2)}px) rotateY(calc(var(--tilt) - ${(32*x).toFixed(2)}deg))`:'';
+  s.book.style.transform=x?`translate3d(0,${(-20*x).toFixed(2)}px,${(50*x).toFixed(2)}px) rotateY(calc(var(--tilt) + ${(20*x).toFixed(2)}deg))`:'';
 }
 // Neighbours make room for a book that swings open.
 function spread(sh){
