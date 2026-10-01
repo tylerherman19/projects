@@ -1,4 +1,5 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Projects · Tyler Herman</title><meta name="description" content="A library of Tyler Herman's websites. Pick a book and open a project.">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Projects · Tyler Herman</title><meta name="description" content="A library of Tyler Herman's websites. Pick a book and open a project."><meta name="theme-color" content="#ebe2d2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='7' y='3' width='19' height='26' rx='2.5' fill='%232e4a3b'/%3E%3Crect x='7' y='3' width='4' height='26' rx='1.5' fill='%23000' fill-opacity='.28'/%3E%3Crect x='14' y='9' width='8' height='2' rx='1' fill='%23f1e8d2'/%3E%3Crect x='14' y='13' width='5' height='2' rx='1' fill='%23f1e8d2' fill-opacity='.65'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <script>document.documentElement.classList.add('js')</script>
@@ -13,28 +14,46 @@
   --bw:200px;--bh:292px;--step:218px;--plane:8deg;--tilt:-26deg;--shelf-h:420px;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--background);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html{scroll-padding-top:96px;-webkit-text-size-adjust:100%;text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+/* The footer sits at the bottom of short pages. clip (not hidden) keeps body from becoming a scroll container, so the sticky header holds. */
+body{margin:0;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;background:var(--background);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;overflow-x:clip}
+html.ready body{transition:background-color .6s var(--ease)}
+main{flex:1 0 auto}
 a{color:inherit}
 button,input{font:inherit;color:inherit}
-header{height:76px;margin:0 5%;display:flex;align-items:center;justify-content:space-between;font-size:14px;border-bottom:1px solid var(--rule)}
+a,button,input{touch-action:manipulation}
+/* The header stays put and frosts over the page once it scrolls underneath. */
+header{position:sticky;top:0;z-index:30;height:76px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;font-size:14px;transition:background-color .35s,box-shadow .35s}
+header::after{content:"";position:absolute;left:5%;right:5%;bottom:0;border-bottom:1px solid var(--rule);transition:opacity .35s}
+header.stuck{background:#f4f2eed1;background:color-mix(in srgb,var(--background) 80%,transparent);-webkit-backdrop-filter:saturate(1.5) blur(16px);backdrop-filter:saturate(1.5) blur(16px);box-shadow:0 1px 0 #0000000f,0 10px 30px -18px #0000003d}
+header.stuck::after{opacity:0}
 .wordmark{text-decoration:none;font-family:var(--serif);font-style:italic;font-size:22px}
 .brand{display:flex;align-items:baseline;gap:14px}
 .tagline{color:var(--muted)}
 .views{position:relative;display:flex;padding:4px;border-radius:999px;border:1px solid #d6d1c6;background:#ffffffa6}
 .views button{position:relative;z-index:1;height:32px;padding:0 15px;border:0;border-radius:999px;background:none;cursor:pointer;font-size:13.5px;color:var(--muted);transition:color .35s var(--ease)}
 .views button[aria-pressed="true"]{color:var(--background)}
-.views button:hover:not([aria-pressed="true"]){color:var(--ink)}
+@media(hover:hover){.views button:hover:not([aria-pressed="true"]){color:var(--ink)}}
 .views button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.views-ink{position:absolute;z-index:0;left:0;top:4px;height:32px;width:0;border-radius:999px;background:var(--ink);transition:transform .55s var(--ease),width .55s var(--ease)}
+.views-ink{position:absolute;z-index:0;left:0;top:4px;height:32px;width:0;border-radius:999px;background:var(--ink)}
+.views.ready .views-ink{transition:transform .55s var(--ease),width .55s var(--ease)}
 
 .intro{margin:72px 5% 8px;text-align:center}
 h1{max-width:1100px;margin:0 auto;font-size:clamp(24px,2.25vw,33px);font-weight:400;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
 .actions{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:26px}
 .pill{height:38px;border-radius:999px;border:1px solid #cfcbc2;background:#ffffffb3;display:inline-flex;align-items:center;gap:8px;padding:0 16px;font-size:14px}
-.search{width:250px}
-.search input{border:0;background:none;width:100%;outline:0;font-size:14px}
+.search{width:280px;padding:0 6px 0 14px;cursor:text;transition:border-color .25s,background-color .25s,box-shadow .25s}
+.search input{flex:1;min-width:0;border:0;background:none;width:100%;outline:0;font-size:14px}
 .search input::placeholder{color:var(--muted)}
-.search:focus-within{outline:2px solid var(--ink);outline-offset:3px}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.search:focus-within{outline:2px solid var(--ink);outline-offset:3px;background:#fff}
+.search-key{margin-right:6px;padding:3px 7px;border:1px solid #d6d1c6;border-radius:6px;font:500 11px/1 var(--sans);color:var(--muted)}
+.search:focus-within .search-key,.search.filled .search-key{display:none}
+.search-clear{display:inline-grid;place-items:center;flex:none;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:#0000000d;color:var(--muted);cursor:pointer;font-size:12px;transition:background .2s,transform .2s var(--ease)}
+.search-clear[hidden]{display:none}
+.search-clear:hover{background:#0000001a;color:var(--ink)}
+.search-clear:active{transform:scale(.88)}
+@media(hover:none),(pointer:coarse){.search-key{display:none}.search input{font-size:16px}}
 
 /* Shelves */
 .collection{position:relative}
@@ -80,10 +99,12 @@ body.index .volume.far{visibility:visible}
 
 footer{margin:30px 5% 0;padding:25px 0 35px;border-top:1px solid var(--rule);font-size:11px;color:var(--muted);display:flex;justify-content:space-between}
 #empty{margin:50px 5%;font-size:18px;text-align:center}
-.skip{position:absolute;top:-100px;left:5%;z-index:10;background:var(--ink);color:white;padding:12px}
+.empty-clear{margin-left:6px;padding:0;border:0;background:none;color:var(--muted);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;cursor:pointer}
+.empty-clear:hover{color:var(--ink)}
+.skip{position:absolute;top:-100px;left:5%;z-index:40;background:var(--ink);color:white;padding:12px}
 .skip:focus{top:10px}
 .ico{width:1em;height:1em;flex:none;vertical-align:-.14em;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.search-ico{display:inline-flex;font-size:15px}
+.search-ico{display:inline-flex;font-size:15px;color:var(--muted)}
 .closer-nav button,.closer-close{display:inline-grid;place-items:center}
 .closer-close .ico{font-size:20px}
 .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
@@ -102,6 +123,16 @@ body.index .cover p{font-size:14px;margin:0}
 body.index .cover-bottom{margin:0}
 body.index .book:focus-visible .cover{outline-offset:0}
 body.index .collection:first-of-type .shelf{border-top:1px solid var(--rule)}
+body.index .cover h3,body.index .cover-bottom .ico{transition:transform .45s var(--ease)}
+@media(hover:hover){
+  body.index .book:hover .cover h3{transform:translateX(8px)}
+  body.index .book:hover .cover-bottom .ico{transform:translate(2px,-2px)}
+}
+/* The cover of the row under the mouse floats beside the pointer. */
+.peek{position:fixed;left:0;top:0;z-index:20;width:clamp(200px,17vw,270px);padding:7px;border-radius:3px;background:var(--paper,#fff);pointer-events:none;opacity:0;scale:.86;
+  box-shadow:0 1px 2px #00000024,0 26px 50px -18px #0000005c;transition:opacity .25s,scale .45s var(--ease);will-change:transform}
+.peek.on{opacity:1;scale:1}
+.peek img{display:block;width:100%;height:auto;aspect-ratio:720/548;object-fit:cover;object-position:50% 22%;border-radius:1px;box-shadow:0 0 0 1px #00000026}
 
 @media(min-width:1500px){:root{--bw:220px;--bh:320px;--step:240px;--shelf-h:450px}.cover h3{font-size:28px}.serif .cover h3{font-size:34px}.cover-image{height:84px}}
 @media(max-width:600px){
@@ -135,11 +166,12 @@ main{position:relative}
 main>.intro,main>#library{position:relative;z-index:1}
 body.gallery{position:relative}
 body.gallery main{position:static}
-body.gallery header,body.gallery footer{position:relative;z-index:1}
+body.gallery footer{position:relative;z-index:1}
 .r-window>div,.r-arch>div{position:absolute}
-body.gallery{--floor:230px;background:#ebe2d2}
+body.gallery{--floor:230px;--background:#ebe2d2}
 body.gallery main{padding-bottom:calc(var(--floor) - 20px)}
-body.gallery header{border-bottom-color:#d8cbb6}
+body.gallery header::after{border-bottom-color:#d8cbb6}
+body.gallery header.stuck{background:#ebe2d2d1;background:color-mix(in srgb,var(--background) 80%,transparent)}
 body.gallery .intro h1{font-family:var(--serif);letter-spacing:-.005em;font-size:clamp(30px,3vw,46px)}
 body.gallery .pill{background:#fbf7f0cc;border-color:#d3c6b1}
 body.gallery footer{margin:0 5%;padding:22px 0 28px;border-top:0;background:none;color:#8a7f6f}
@@ -148,13 +180,17 @@ body.gallery footer{margin:0 5%;padding:22px 0 28px;border-top:0;background:none
 .f-gold{--molding:linear-gradient(135deg,#6b4c1b 0%,#c9a65a 13%,#9a7433 27%,#ecd28d 43%,#a07835 57%,#d8b769 73%,#6a4a1a 100%);--fillet:#c7a052;--hi:#f7e6ae;--lo:#4a3410}
 .f-ebony{--molding:linear-gradient(135deg,#36312b 0%,#15120f 32%,#2d2924 52%,#0e0c0a 76%,#26221e 100%);--fillet:#b8954d;--hi:#57504688;--lo:#030202}
 .f-oak{--molding:repeating-linear-gradient(94deg,#0000 0 3px,#5a3a1a12 3px 4px,#0000 4px 9px),linear-gradient(135deg,#8c6236 0%,#c99f71 24%,#a57a4a 50%,#c69a68 74%,#86592f 100%);--fillet:#efe6d4;--hi:#e6c79c;--lo:#5c3d1f}
-.frame{display:block;position:relative;width:100%;margin:0;padding:5%;border:0;border-radius:1px;background:var(--molding);color:inherit;font:inherit;
-  box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo),inset 4px 4px 7px #ffffff1f,inset -4px -4px 9px #00000047,
-    0 1px 1px #0000002e,9px 13px 15px -7px #3b2a164d,22px 34px 46px -20px #3b2a1659;
+.frame{--bevel:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo),inset 4px 4px 7px #ffffff1f,inset -4px -4px 9px #00000047;
+  --raised:0 1px 1px #00000026,14px 22px 22px -8px #3b2a1647,34px 54px 70px -24px #3b2a1666;
+  display:block;position:relative;width:100%;margin:0;padding:5%;border:0;border-radius:1px;background:var(--molding);color:inherit;font:inherit;
+  box-shadow:var(--bevel),0 1px 1px #0000002e,9px 13px 15px -7px #3b2a164d,22px 34px 46px -20px #3b2a1659;
   transition:transform .75s var(--ease),box-shadow .75s var(--ease)}
 .mat{display:block;padding:3.2%;background:#f8f3ea;box-shadow:0 0 0 1.5px var(--fillet),0 0 0 3px #00000024,inset 1px 2px 4px #00000033}
 .canvas{display:block;position:relative;overflow:hidden;aspect-ratio:var(--ar,16/10);background:#fff;box-shadow:inset 0 0 0 1px #0000001f}
-.canvas img{display:block;width:100%;height:auto;transform:translateY(0);transition:transform .9s var(--ease)}
+.canvas img{display:block;width:100%;height:auto;transform:translateY(0);transition:transform .9s var(--ease),opacity .6s}
+/* Pictures that arrive late fade in rather than pop. */
+.canvas img.pending,.cover-image img.pending,.rcanvas img.pending,.peek img.pending{opacity:0}
+.cover-image img,.rcanvas img,.peek img{transition:opacity .6s}
 .canvas::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(112deg,#ffffff2e 0,#ffffff00 28%,#ffffff00 60%,#ffffff17 71%,#ffffff00 83%),linear-gradient(180deg,#00000012,#0000 18%)}
 .canvas::before{content:"";position:absolute;z-index:1;top:-10%;bottom:-10%;left:0;width:45%;pointer-events:none;opacity:0;
@@ -172,18 +208,22 @@ body.gallery footer{margin:0 5%;padding:22px 0 28px;border-top:0;background:none
 .piece{flex:0 1 auto;min-width:0;margin:calc(var(--y,0) * 1px) 0 0;width:clamp(calc(var(--w) * .55px),calc(var(--w) * .0625vw),calc(var(--w) * 1.1px));transform-origin:50% -46px}
 .piece[hidden]{display:none}
 .piece .frame{cursor:zoom-in}
-.piece:hover .frame,.piece .frame:focus-visible{transform:translateY(-7px) scale(1.012);
-  box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo),inset 4px 4px 7px #ffffff1f,inset -4px -4px 9px #00000047,
-    0 1px 1px #00000026,14px 22px 22px -8px #3b2a1647,34px 54px 70px -24px #3b2a1666}
-.piece:hover .canvas img,.piece .frame:focus-visible .canvas img{transform:translateY(var(--shift,0));transition:transform var(--dur,4s) cubic-bezier(.42,0,.28,1) .35s}
-.piece:hover .canvas::before{animation:sheen 1.5s var(--ease) .05s}
+.piece .frame:focus-visible{transform:translateY(-7px) scale(1.012);box-shadow:var(--bevel),var(--raised)}
+.piece .frame:focus-visible .canvas img{transform:translateY(var(--shift,0));transition:transform var(--dur,4s) cubic-bezier(.42,0,.28,1) .35s}
+/* Hover effects only where there is a real pointer, so a tap on a phone doesn't leave a frame stuck lifted. */
+@media(hover:hover){
+  .piece:hover .frame{transform:translateY(-7px) scale(1.012);box-shadow:var(--bevel),var(--raised)}
+  .piece:hover .canvas img{transform:translateY(var(--shift,0));transition:transform var(--dur,4s) cubic-bezier(.42,0,.28,1) .35s}
+  .piece:hover .canvas::before{animation:sheen 1.5s var(--ease) .05s}
+  .p-title:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+}
+.piece .frame:active{transform:translateY(-2px) scale(1.004);transition-duration:.18s}
 .piece .frame:focus-visible{outline:2px solid #2a2118;outline-offset:7px}
 .piece.lifted{visibility:hidden}
 @keyframes sheen{0%{opacity:0;transform:translateX(-140%) skewX(-12deg)}25%{opacity:1}100%{opacity:0;transform:translateX(320%) skewX(-12deg)}}
 
 .placard{display:grid;grid-template-columns:1fr auto;column-gap:12px;margin-top:17px;padding:0 1px}
 .p-title{font-family:var(--serif);font-size:clamp(19px,1.35vw,24px);line-height:1.1;color:#241d14;text-decoration:none}
-.p-title:hover{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 .p-title:focus-visible{outline:2px solid #2a2118;outline-offset:3px}
 .p-no{font-size:10px;letter-spacing:.8px;color:#9a8e7d;align-self:end}
 .p-desc{grid-column:1/-1;margin-top:4px;font-size:clamp(12.5px,.85vw,14px);line-height:1.38;color:#716655}
@@ -306,13 +346,18 @@ body.gallery .piece.hung{animation:hang 1.3s var(--d,0ms) both cubic-bezier(.3,.
 .r-bench .rear.l{left:9%}.r-bench .rear.r{right:9%}
 
 /* ---------- Step closer ---------- */
+/* While a project is open the page can't scroll; padding stands in for the scrollbar so nothing shifts sideways. */
 html.lock{overflow:hidden}
-.closer{position:fixed;inset:0;z-index:50;display:grid;place-items:center}
+html.lock body{padding-right:var(--sbw,0px)}
+.closer{position:fixed;inset:0;z-index:50;display:grid;place-items:center;overscroll-behavior:contain}
 .closer[hidden]{display:none}
 .closer-backdrop{position:absolute;inset:0;background:#2b21168a;-webkit-backdrop-filter:blur(10px) saturate(.9);backdrop-filter:blur(10px) saturate(.9)}
 .closer-body{position:relative;display:flex;align-items:center;gap:clamp(28px,4vw,64px);padding:24px}
+/* Sideways swipes page through projects; vertical scrolling and pinch-zoom stay native. Once zoomed in, panning is left to the browser. */
+.closer,.closer-body,.closer .canvas,.reader-stage,.rbook,.rcanvas{touch-action:pan-y pinch-zoom}
+html.zoomed .closer,html.zoomed .closer-body,html.zoomed .closer .canvas,html.zoomed .reader-stage,html.zoomed .rbook,html.zoomed .rcanvas{touch-action:auto}
 .closer-frame{flex:none;transform-origin:0 0;will-change:transform}
-.closer-frame .frame{cursor:default;box-shadow:inset 1px 1px 0 var(--hi),inset -1px -1px 0 var(--lo),inset 4px 4px 7px #ffffff1f,inset -4px -4px 9px #00000047,0 2px 3px #0000004d,24px 40px 80px -20px #0000008c}
+.closer-frame .frame{cursor:default;box-shadow:var(--bevel),0 2px 3px #0000004d,24px 40px 80px -20px #0000008c}
 .closer .canvas{overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;outline:none}
 .closer .canvas::-webkit-scrollbar{display:none}
 .closer .canvas::after,.closer .canvas::before{position:sticky;display:none}
@@ -323,14 +368,15 @@ html.lock{overflow:hidden}
 .closer-desc{margin:0;font-size:15px;line-height:1.45;color:#4f4639}
 .closer-host{margin:10px 0 22px;font-size:12px;color:#8b7f6e;word-break:break-all}
 .closer-visit{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 20px;border-radius:999px;background:#241d14;color:#f8f3ea;text-decoration:none;font-size:14px;transition:transform .3s var(--ease),background .3s}
-.closer-visit:hover{background:#000;transform:translateY(-1px)}
+@media(hover:hover){.closer-visit:hover{background:#000;transform:translateY(-1px)}.closer-nav button:hover{background:#efe6d6}.rvisit:hover{background:#000;transform:translateY(-1px)}.rfoot button:hover{background:#efe8da}}
+.closer-visit:active,.rvisit:active{transform:scale(.96);transition-duration:.12s}
+.closer-nav button:active,.rfoot button:active,.closer-close:active,.reader-close:active{transform:scale(.9);transition-duration:.12s}
 .closer-visit:focus-visible,.closer-nav button:focus-visible,.closer-close:focus-visible{outline:2px solid #241d14;outline-offset:3px}
 .closer-hint{margin:16px 0 0;font-size:12px;color:#8b7f6e}
 .closer-nav{display:flex;align-items:center;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid #e2d8c6}
-.closer-nav button{width:38px;height:38px;border-radius:50%;border:1px solid #d3c6b1;background:none;cursor:pointer;font-size:16px;transition:background .25s}
-.closer-nav button:hover{background:#efe6d6}
+.closer-nav button{width:38px;height:38px;border-radius:50%;border:1px solid #d3c6b1;background:none;cursor:pointer;font-size:16px;transition:background .25s,transform .25s var(--ease)}
 .closer-count{flex:1;text-align:center;font-size:12px;color:#8b7f6e;letter-spacing:.6px}
-.closer-close{position:fixed;top:18px;right:20px;width:44px;height:44px;border-radius:50%;border:0;background:#f8f3ea;color:#241d14;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 4px 14px #00000040}
+.closer-close{position:fixed;top:18px;right:20px;width:44px;height:44px;border-radius:50%;border:0;background:#f8f3ea;color:#241d14;font-size:24px;line-height:1;cursor:pointer;box-shadow:0 4px 14px #00000040;transition:transform .25s var(--ease)}
 
 @media(max-width:1100px){.r-leaves-b{display:none}}
 @media(max-width:760px){
@@ -355,9 +401,8 @@ html.lock{overflow:hidden}
   .r-outside,.r-sun,.r-leaves,.r-floor-sun{animation:none!important}
   .piece:hover .canvas img,.piece .frame:focus-visible .canvas img{transform:none}
   .piece:hover .canvas::before{animation:none}
-  .frame,.canvas img,.views-ink{transition:none!important}
+  .frame,.canvas img,.views-ink,.peek,body{transition:none!important}
 }
-::view-transition-old(root),::view-transition-new(root){animation-duration:.6s;animation-timing-function:cubic-bezier(.4,0,.2,1)}
 
 /* ---------- Open book (shelf) ---------- */
 .reader{position:fixed;inset:0;z-index:50}
@@ -385,10 +430,8 @@ html.lock{overflow:hidden}
 .rdesc{margin:0;font-size:1.08em;line-height:1.5;color:#4b4337}
 .rhost{margin:.9em 0 0;font-size:.66em;color:#9a8f7e;word-break:break-all}
 .rvisit{align-self:flex-start;display:inline-flex;align-items:center;gap:.5em;margin-top:1.6em;padding:.7em 1.2em;border-radius:99em;background:#2a241c;color:#fbf8f1;text-decoration:none;font-size:.78em;transition:background .25s,transform .3s var(--ease)}
-.rvisit:hover{background:#000;transform:translateY(-1px)}
 .rfoot{display:flex;align-items:center;gap:.8em;margin-top:auto}
-.rfoot button{display:inline-grid;place-items:center;width:2.1em;height:2.1em;padding:0;border-radius:50%;border:1px solid #d8cfbe;background:none;color:inherit;cursor:pointer;font-size:.9em;transition:background .2s}
-.rfoot button:hover{background:#efe8da}
+.rfoot button{display:inline-grid;place-items:center;width:2.1em;height:2.1em;padding:0;border-radius:50%;border:1px solid #d8cfbe;background:none;color:inherit;cursor:pointer;font-size:.9em;transition:background .2s,transform .25s var(--ease)}
 .rcount{flex:1;text-align:center;font-size:.6em;letter-spacing:.12em;color:#9a8f7e}
 .rfolio{font-size:.6em;color:#9a8f7e;text-align:center;margin-top:.9em}
 .rplate{display:flex;flex-direction:column;flex:1;min-height:0;margin-top:1.4em}
@@ -407,12 +450,27 @@ html.lock{overflow:hidden}
 .rleaf-front .cover-box{position:absolute;left:0;top:0;width:var(--cbw);height:var(--cbh);zoom:var(--cz)}
 .rleaf-back{transform:rotateY(180deg)}
 .rleaf-back .rhalf{width:100%}
-.reader-close{position:fixed;z-index:2;top:18px;right:20px;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;background:#fbf8f1;color:#2a241c;cursor:pointer;box-shadow:0 4px 14px #00000040}
+/* Paging turns a leaf over on the spine. Under it, a copy of the page being covered stays put until the leaf lands. */
+.rturn,.runder{position:absolute;top:0;bottom:0;width:50%;display:none;pointer-events:none}
+.rbook.turning{perspective:calc(var(--W) * 4.5)}
+.rbook.turning .rturn,.rbook.turning .runder{display:block}
+.runder{z-index:2}
+.rturn{z-index:3;transform-style:preserve-3d}
+.rbook[data-turn=next] .rturn{left:50%;transform-origin:0 50%}
+.rbook[data-turn=prev] .rturn{left:0;transform-origin:100% 50%}
+.rbook[data-turn=next] .runder{left:0}
+.rbook[data-turn=prev] .runder{left:50%}
+.rface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.rface.back{transform:rotateY(180deg)}
+.rface .rhalf,.runder .rhalf{left:0;right:0;width:auto}
+.rshade{position:absolute;z-index:2;top:.75em;bottom:.75em;left:0;right:0;opacity:0;background:linear-gradient(90deg,#00000052,#0000 80%)}
+.rbook[data-turn=next] .rface.back .rshade,.rbook[data-turn=prev] .rface.front .rshade{background:linear-gradient(270deg,#00000052,#0000 80%)}
+.reader-close{position:fixed;z-index:2;top:18px;right:20px;display:inline-grid;place-items:center;width:44px;height:44px;border-radius:50%;border:0;background:#fbf8f1;color:#2a241c;cursor:pointer;box-shadow:0 4px 14px #00000040;transition:transform .25s var(--ease)}
 .reader-close .ico{font-size:20px}
 .volume.lifted{visibility:hidden}
 @media(max-width:600px){.reader-close{top:12px;right:12px;width:40px;height:40px}}
 
-</style></head><body class="gallery"><a class="skip" href="#library">Skip to library</a>
+</style></head><body class="gallery"><script>{const v=new URLSearchParams(location.search).get('view');if(v==='shelf'||v==='index')document.body.className=v==='index'?'index':''}</script><a class="skip" href="#library">Skip to library</a>
 <header><div class="brand"><a class="wordmark" href="./">Tyler Herman</a><span class="tagline">Websites, collected.</span></div><nav class="views" aria-label="Choose a view"><span class="views-ink" aria-hidden="true"></span><button type="button" data-view="shelf" aria-pressed="false">Shelf</button><button type="button" data-view="gallery" aria-pressed="true">Gallery</button><button type="button" data-view="index" aria-pressed="false">Index</button></nav></header>
 <main><div class="room" aria-hidden="true">
 <div class="r-wall"></div>
@@ -424,8 +482,8 @@ html.lock{overflow:hidden}
 <div class="r-floor"><div class="r-tiles"></div><div class="r-floor-sun"></div><div class="r-rug"></div>
 <div class="r-bench"><i class="leg rear l"></i><i class="leg rear r"></i><i class="apron"></i><i class="seat"></i><i class="leg front l"></i><i class="leg front r"></i></div></div>
 </div><section class="intro"><h1 class="headline"><span class="w" style="--i:0">What</span> <span class="w" style="--i:1">I’ve</span> <span class="w" style="--i:2">been</span> <span class="w" style="--i:3">working</span> <span class="w" style="--i:4">on</span></h1>
-<div class="actions"><label class="pill search"><span class="sr-only">Find a project</span><input id="search" type="search" placeholder="Find a project" autocomplete="off"><span class="search-ico"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></label></div></section>
-<div id="library"><p class="sr-only">Each book opens to a page about the project, with a link to the website. The shelf drifts slowly and stops while you hover or use Tab to browse. Drag or swipe it to move it.</p><section class="collection"><div class="shelf" aria-label="Project shelf"><div class="rail"><article class="volume" data-name="berkshire meetings town meetings and public records." data-title="Berkshire Meetings" data-desc="Town meetings and public records." data-no="01" data-shot="shots/berkshire-meetings.webp?v=d137e329" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/berkshire-meetings" style="--paper:#2e4a3b;--cover-ink:#f1e8d2;--t:34px;--dh:0px"><a class="book serif" href="https://tylerherman19.github.io/berkshire-meetings/" target="_blank" rel="noopener" aria-label="Open Berkshire Meetings"><div class="face cover"><div class="cover-top"><span>TH / 01</span><span>PROJECTS</span></div><h3>Berkshire Meetings</h3><div class="cover-image"><img src="covers/berkshire-meetings.webp?v=07ec978a" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Town meetings and public records.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="ask madison what people want their city to change." data-title="Ask Madison" data-desc="What people want their city to change." data-no="02" data-shot="shots/ask-madison.webp?v=c33f286b" data-iw="960" data-ih="1647" data-host="tylerherman19.github.io/ask-madison" style="--paper:#efe4cb;--cover-ink:#1d2b44;--t:26px;--dh:18px"><a class="book" href="https://tylerherman19.github.io/ask-madison/" target="_blank" rel="noopener" aria-label="Open Ask Madison"><div class="face cover"><div class="cover-top"><span>TH / 02</span><span>PROJECTS</span></div><h3>Ask Madison</h3><div class="cover-image"><img src="covers/ask-madison.webp?v=8286473e" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>What people want their city to change.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="assembly district 76 the democratic primary, ward by ward." data-title="Assembly District 76" data-desc="The Democratic primary, ward by ward." data-no="03" data-shot="shots/assembly-district-76.webp?v=170cb5b0" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Ad76" style="--paper:#1f3a8a;--cover-ink:#f4efe4;--t:30px;--dh:-8px"><a class="book" href="https://tylerherman19.github.io/Ad76/" target="_blank" rel="noopener" aria-label="Open Assembly District 76"><div class="face cover"><div class="cover-top"><span>TH / 03</span><span>PROJECTS</span></div><h3>Assembly District 76</h3><div class="cover-image"><img src="covers/assembly-district-76.webp?v=1f9e8414" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The Democratic primary, ward by ward.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="dane county war room election results across dane county." data-title="Dane County War Room" data-desc="Election results across Dane County." data-no="04" data-shot="shots/dane-county-war-room.webp?v=968c7c6f" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/dane-county-war-room" style="--paper:#c2362c;--cover-ink:#fbefe2;--t:38px;--dh:10px"><a class="book" href="https://tylerherman19.github.io/dane-county-war-room/" target="_blank" rel="noopener" aria-label="Open Dane County War Room"><div class="face cover"><div class="cover-top"><span>TH / 04</span><span>PROJECTS</span></div><h3>Dane County War Room</h3><div class="cover-image"><img src="covers/dane-county-war-room.webp?v=1707d035" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Election results across Dane County.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="plymouth mayor a map of the 2026 mayor’s race." data-title="Plymouth Mayor" data-desc="A map of the 2026 mayor’s race." data-no="05" data-shot="shots/plymouth-mayor.webp?v=179949c0" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/PlymouthMap" style="--paper:#ecc64c;--cover-ink:#1d1c18;--t:28px;--dh:-14px"><a class="book serif" href="https://tylerherman19.github.io/PlymouthMap/" target="_blank" rel="noopener" aria-label="Open Plymouth Mayor"><div class="face cover"><div class="cover-top"><span>TH / 05</span><span>PROJECTS</span></div><h3>Plymouth Mayor</h3><div class="cover-image"><img src="covers/plymouth-mayor.webp?v=e24df9c0" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A map of the 2026 mayor’s race.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="candidate research a public-record candidate monitor." data-title="Candidate Research" data-desc="A public-record candidate monitor." data-no="06" data-shot="shots/candidate-research.webp?v=4deeae67" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/CandidateResearch" style="--paper:#1c1c1b;--cover-ink:#f1ece2;--t:32px;--dh:6px"><a class="book" href="https://tylerherman19.github.io/CandidateResearch/" target="_blank" rel="noopener" aria-label="Open Candidate Research"><div class="face cover"><div class="cover-top"><span>TH / 06</span><span>PROJECTS</span></div><h3>Candidate Research</h3><div class="cover-image"><img src="covers/candidate-research.webp?v=562c55b9" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A public-record candidate monitor.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="ticketline find an event. watch its price." data-title="Ticketline" data-desc="Find an event. Watch its price." data-no="07" data-shot="shots/ticketline.webp?v=fa5a45fb" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Tickets" style="--paper:#eba9b6;--cover-ink:#2b1520;--t:24px;--dh:-4px"><a class="book serif" href="https://tylerherman19.github.io/Tickets/" target="_blank" rel="noopener" aria-label="Open Ticketline"><div class="face cover"><div class="cover-top"><span>TH / 07</span><span>PROJECTS</span></div><h3>Ticketline</h3><div class="cover-image"><img src="covers/ticketline.webp?v=1de12f43" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Find an event. Watch its price.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="the model an nfl forecast desk." data-title="The Model" data-desc="An NFL forecast desk." data-no="08" data-shot="shots/the-model.webp?v=e66b465d" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Sport3" style="--paper:#1f5c58;--cover-ink:#f1ebdc;--t:34px;--dh:14px"><a class="book" href="https://tylerherman19.github.io/Sport3/" target="_blank" rel="noopener" aria-label="Open The Model"><div class="face cover"><div class="cover-top"><span>TH / 08</span><span>PROJECTS</span></div><h3>The Model</h3><div class="cover-image"><img src="covers/the-model.webp?v=e6758ac5" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>An NFL forecast desk.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="madness college basketball survivor." data-title="Madness" data-desc="College basketball survivor." data-no="09" data-shot="shots/madness.webp?v=aa3d50a8" data-iw="960" data-ih="1156" data-host="madness-cyan.vercel.app" style="--paper:#dc6a2e;--cover-ink:#fff4e6;--t:28px;--dh:-10px"><a class="book" href="https://madness-cyan.vercel.app/" target="_blank" rel="noopener" aria-label="Open Madness"><div class="face cover"><div class="cover-top"><span>TH / 09</span><span>PROJECTS</span></div><h3>Madness</h3><div class="cover-image"><img src="covers/madness.webp?v=79c9299c" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>College basketball survivor.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="nfl survivor one pick. another week alive." data-title="NFL Survivor" data-desc="One pick. Another week alive." data-no="10" data-shot="shots/nfl-survivor.webp?v=29dde075" data-iw="960" data-ih="1800" data-host="nfl-survivor-coral.vercel.app" style="--paper:#f3eee4;--cover-ink:#131313;--t:30px;--dh:4px"><a class="book serif" href="https://nfl-survivor-coral.vercel.app/" target="_blank" rel="noopener" aria-label="Open NFL Survivor"><div class="face cover"><div class="cover-top"><span>TH / 10</span><span>PROJECTS</span></div><h3>NFL Survivor</h3><div class="cover-image"><img src="covers/nfl-survivor.webp?v=611e6374" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>One pick. Another week alive.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="the costco gas index two warehouses. one daily comparison." data-title="The Costco Gas Index" data-desc="Two warehouses. One daily comparison." data-no="11" data-shot="shots/the-costco-gas-index.webp?v=9718844b" data-iw="960" data-ih="1800" data-host="costco-gas-index.vercel.app" style="--paper:#b52b2b;--cover-ink:#fff6ee;--t:36px;--dh:20px"><a class="book" href="https://costco-gas-index.vercel.app/" target="_blank" rel="noopener" aria-label="Open The Costco Gas Index"><div class="face cover"><div class="cover-top"><span>TH / 11</span><span>PROJECTS</span></div><h3>The Costco Gas Index</h3><div class="cover-image"><img src="covers/the-costco-gas-index.webp?v=59bf700d" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Two warehouses. One daily comparison.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="road construction the northwest metro, torn up." data-title="Road Construction" data-desc="The northwest metro, torn up." data-no="12" data-shot="shots/road-construction.webp?v=223de80d" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/is-it-road-construction-season" style="--paper:#d9a634;--cover-ink:#1c1a14;--t:26px;--dh:-6px"><a class="book" href="https://tylerherman19.github.io/is-it-road-construction-season/" target="_blank" rel="noopener" aria-label="Open Road Construction"><div class="face cover"><div class="cover-top"><span>TH / 12</span><span>PROJECTS</span></div><h3>Road Construction</h3><div class="cover-image"><img src="covers/road-construction.webp?v=b485be75" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The northwest metro, torn up.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="plow snowplows across plymouth." data-title="Plow" data-desc="Snowplows across Plymouth." data-no="13" data-shot="shots/plow.webp?v=56675aca" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/plow" style="--paper:#bfd5e0;--cover-ink:#13222b;--t:30px;--dh:-16px"><a class="book serif" href="https://tylerherman19.github.io/plow/" target="_blank" rel="noopener" aria-label="Open Plow"><div class="face cover"><div class="cover-top"><span>TH / 13</span><span>PROJECTS</span></div><h3>Plow</h3><div class="cover-image"><img src="covers/plow.webp?v=a015ee13" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Snowplows across Plymouth.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="hopscotch milwaukee buses and the streetcar." data-title="Hopscotch" data-desc="Milwaukee buses and the streetcar." data-no="14" data-shot="shots/hopscotch.webp?v=8e7f353b" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/hopscotch" style="--paper:#2f4bd0;--cover-ink:#ffffff;--t:32px;--dh:8px"><a class="book" href="https://tylerherman19.github.io/hopscotch/" target="_blank" rel="noopener" aria-label="Open Hopscotch"><div class="face cover"><div class="cover-top"><span>TH / 14</span><span>PROJECTS</span></div><h3>Hopscotch</h3><div class="cover-image"><img src="covers/hopscotch.webp?v=1cad7c5f" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee buses and the streetcar.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="coffee prices milwaukee and the twin cities." data-title="Coffee Prices" data-desc="Milwaukee and the Twin Cities." data-no="15" data-shot="shots/coffee-prices.webp?v=efd26053" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Coffee" style="--paper:#6b4029;--cover-ink:#f5e6d1;--t:30px;--dh:12px"><a class="book serif" href="https://tylerherman19.github.io/Coffee/" target="_blank" rel="noopener" aria-label="Open Coffee Prices"><div class="face cover"><div class="cover-top"><span>TH / 15</span><span>PROJECTS</span></div><h3>Coffee Prices</h3><div class="cover-image"><img src="covers/coffee-prices.webp?v=96b007e8" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee and the Twin Cities.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="milwaukee drinks espresso martinis and spotted cow." data-title="Milwaukee Drinks" data-desc="Espresso martinis and Spotted Cow." data-no="16" data-shot="shots/milwaukee-drinks.webp?v=0e2d483a" data-iw="960" data-ih="1746" data-host="tylerherman19.github.io/espresso-martinis" style="--paper:#6e1f2f;--cover-ink:#f6e4da;--t:26px;--dh:-8px"><a class="book" href="https://tylerherman19.github.io/espresso-martinis/" target="_blank" rel="noopener" aria-label="Open Milwaukee Drinks"><div class="face cover"><div class="cover-top"><span>TH / 16</span><span>PROJECTS</span></div><h3>Milwaukee Drinks</h3><div class="cover-image"><img src="covers/milwaukee-drinks.webp?v=4b09ec69" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Espresso martinis and Spotted Cow.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="cheese curd tour six stops through milwaukee." data-title="Cheese Curd Tour" data-desc="Six stops through Milwaukee." data-no="17" data-shot="shots/cheese-curd-tour.webp?v=eb3f7443" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/milwaukee-cheese-curd-tour-2026" style="--paper:#f2cf4b;--cover-ink:#2a1d0c;--t:34px;--dh:2px"><a class="book" href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" target="_blank" rel="noopener" aria-label="Open Cheese Curd Tour"><div class="face cover"><div class="cover-top"><span>TH / 17</span><span>PROJECTS</span></div><h3>Cheese Curd Tour</h3><div class="cover-image"><img src="covers/cheese-curd-tour.webp?v=6186c9bf" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Six stops through Milwaukee.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="doors open mke milwaukee, one building at a time." data-title="Doors Open MKE" data-desc="Milwaukee, one building at a time." data-no="18" data-shot="shots/doors-open-mke.webp?v=45467b7a" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/MKE-Tour" style="--paper:#ede5d3;--cover-ink:#13202e;--t:38px;--dh:18px"><a class="book serif" href="https://tylerherman19.github.io/MKE-Tour/" target="_blank" rel="noopener" aria-label="Open Doors Open MKE"><div class="face cover"><div class="cover-top"><span>TH / 18</span><span>PROJECTS</span></div><h3>Doors Open MKE</h3><div class="cover-image"><img src="covers/doors-open-mke.webp?v=167d90f2" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee, one building at a time.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="boat watch watch for an open reservation." data-title="Boat Watch" data-desc="Watch for an open reservation." data-no="19" data-shot="shots/boat-watch.webp?v=3bbac4bb" data-iw="960" data-ih="974" data-host="boats-tau.vercel.app" style="--paper:#7fb1d5;--cover-ink:#0f1d2a;--t:26px;--dh:-12px"><a class="book" href="https://boats-tau.vercel.app/" target="_blank" rel="noopener" aria-label="Open Boat Watch"><div class="face cover"><div class="cover-top"><span>TH / 19</span><span>PROJECTS</span></div><h3>Boat Watch</h3><div class="cover-image"><img src="covers/boat-watch.webp?v=d127b1d8" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Watch for an open reservation.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="walk to win the sperax april fools project." data-title="Walk to Win" data-desc="The Sperax April Fools project." data-no="20" data-shot="shots/walk-to-win.webp?v=d25d6e17" data-iw="960" data-ih="1800" data-host="speraxchallenge.com" style="--paper:#141414;--cover-ink:#dff25a;--t:30px;--dh:6px"><a class="book" href="http://speraxchallenge.com/" target="_blank" rel="noopener" aria-label="Open Walk to Win"><div class="face cover"><div class="cover-top"><span>TH / 20</span><span>PROJECTS</span></div><h3>Walk to Win</h3><div class="cover-image"><img src="covers/walk-to-win.webp?v=9d3cdb3a" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The Sperax April Fools project.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="vibe trading a paper-trading research desk." data-title="Vibe Trading" data-desc="A paper-trading research desk." data-no="21" data-shot="shots/vibe-trading.webp?v=e9c86880" data-iw="960" data-ih="600" data-host="vibe-trading-bice.vercel.app" style="--paper:#3f7d4b;--cover-ink:#f3f0e6;--t:32px;--dh:-4px"><a class="book serif" href="https://vibe-trading-bice.vercel.app/" target="_blank" rel="noopener" aria-label="Open Vibe Trading"><div class="face cover"><div class="cover-top"><span>TH / 21</span><span>PROJECTS</span></div><h3>Vibe Trading</h3><div class="cover-image"><img src="covers/vibe-trading.webp?v=9565bfe5" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A paper-trading research desk.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article></div></div><p class="shelf-caption" aria-hidden="true"><span class="c-title"></span><span class="c-desc"></span></p></section><section id="gallery" aria-label="Gallery"><div class="wall"><div class="row"><figure class="piece f-gold" data-name="berkshire meetings town meetings and public records." data-href="https://tylerherman19.github.io/berkshire-meetings/" data-host="tylerherman19.github.io/berkshire-meetings" data-no="01" style="--w:500;--ar:16/10;--y:0;--z:10"><button class="frame" type="button" aria-label="Step closer to Berkshire Meetings"><span class="mat"><span class="canvas"><img src="shots/berkshire-meetings.webp?v=d137e329" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/berkshire-meetings/" target="_blank" rel="noopener">Berkshire Meetings</a><span class="p-no" aria-hidden="true">01</span><span class="p-desc">Town meetings and public records.</span></figcaption></figure><figure class="piece f-oak" data-name="ask madison what people want their city to change." data-href="https://tylerherman19.github.io/ask-madison/" data-host="tylerherman19.github.io/ask-madison" data-no="02" style="--w:290;--ar:4/5;--y:-28;--z:26"><button class="frame" type="button" aria-label="Step closer to Ask Madison"><span class="mat"><span class="canvas"><img src="shots/ask-madison.webp?v=c33f286b" width="960" height="1647" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/ask-madison/" target="_blank" rel="noopener">Ask Madison</a><span class="p-no" aria-hidden="true">02</span><span class="p-desc">What people want their city to change.</span></figcaption></figure><figure class="piece f-gold" data-name="assembly district 76 the democratic primary, ward by ward." data-href="https://tylerherman19.github.io/Ad76/" data-host="tylerherman19.github.io/Ad76" data-no="03" style="--w:380;--ar:4/3;--y:22;--z:18"><button class="frame" type="button" aria-label="Step closer to Assembly District 76"><span class="mat"><span class="canvas"><img src="shots/assembly-district-76.webp?v=170cb5b0" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Ad76/" target="_blank" rel="noopener">Assembly District 76</a><span class="p-no" aria-hidden="true">03</span><span class="p-desc">The Democratic primary, ward by ward.</span></figcaption></figure></div><div class="row"><figure class="piece f-ebony" data-name="dane county war room election results across dane county." data-href="https://tylerherman19.github.io/dane-county-war-room/" data-host="tylerherman19.github.io/dane-county-war-room" data-no="04" style="--w:600;--ar:16/10;--y:0;--z:8"><button class="frame" type="button" aria-label="Step closer to Dane County War Room"><span class="mat"><span class="canvas"><img src="shots/dane-county-war-room.webp?v=968c7c6f" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/dane-county-war-room/" target="_blank" rel="noopener">Dane County War Room</a><span class="p-no" aria-hidden="true">04</span><span class="p-desc">Election results across Dane County.</span></figcaption></figure><figure class="piece f-gold" data-name="plymouth mayor a map of the 2026 mayor’s race." data-href="https://tylerherman19.github.io/PlymouthMap/" data-host="tylerherman19.github.io/PlymouthMap" data-no="05" style="--w:400;--ar:16/10;--y:-34;--z:20"><button class="frame" type="button" aria-label="Step closer to Plymouth Mayor"><span class="mat"><span class="canvas"><img src="shots/plymouth-mayor.webp?v=179949c0" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/PlymouthMap/" target="_blank" rel="noopener">Plymouth Mayor</a><span class="p-no" aria-hidden="true">05</span><span class="p-desc">A map of the 2026 mayor’s race.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="candidate research a public-record candidate monitor." data-href="https://tylerherman19.github.io/CandidateResearch/" data-host="tylerherman19.github.io/CandidateResearch" data-no="06" style="--w:270;--ar:4/5;--y:12;--z:28"><button class="frame" type="button" aria-label="Step closer to Candidate Research"><span class="mat"><span class="canvas"><img src="shots/candidate-research.webp?v=4deeae67" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/CandidateResearch/" target="_blank" rel="noopener">Candidate Research</a><span class="p-no" aria-hidden="true">06</span><span class="p-desc">A public-record candidate monitor.</span></figcaption></figure><figure class="piece f-gold" data-name="ticketline find an event. watch its price." data-href="https://tylerherman19.github.io/Tickets/" data-host="tylerherman19.github.io/Tickets" data-no="07" style="--w:480;--ar:16/10;--y:-18;--z:12"><button class="frame" type="button" aria-label="Step closer to Ticketline"><span class="mat"><span class="canvas"><img src="shots/ticketline.webp?v=fa5a45fb" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Tickets/" target="_blank" rel="noopener">Ticketline</a><span class="p-no" aria-hidden="true">07</span><span class="p-desc">Find an event. Watch its price.</span></figcaption></figure><figure class="piece f-ebony" data-name="the model an nfl forecast desk." data-href="https://tylerherman19.github.io/Sport3/" data-host="tylerherman19.github.io/Sport3" data-no="08" style="--w:340;--ar:4/3;--y:26;--z:22"><button class="frame" type="button" aria-label="Step closer to The Model"><span class="mat"><span class="canvas"><img src="shots/the-model.webp?v=e66b465d" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Sport3/" target="_blank" rel="noopener">The Model</a><span class="p-no" aria-hidden="true">08</span><span class="p-desc">An NFL forecast desk.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="madness college basketball survivor." data-href="https://madness-cyan.vercel.app/" data-host="madness-cyan.vercel.app" data-no="09" style="--w:420;--ar:4/3;--y:-14;--z:16"><button class="frame" type="button" aria-label="Step closer to Madness"><span class="mat"><span class="canvas"><img src="shots/madness.webp?v=aa3d50a8" width="960" height="1156" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://madness-cyan.vercel.app/" target="_blank" rel="noopener">Madness</a><span class="p-no" aria-hidden="true">09</span><span class="p-desc">College basketball survivor.</span></figcaption></figure><figure class="piece f-ebony" data-name="nfl survivor one pick. another week alive." data-href="https://nfl-survivor-coral.vercel.app/" data-host="nfl-survivor-coral.vercel.app" data-no="10" style="--w:560;--ar:16/10;--y:16;--z:10"><button class="frame" type="button" aria-label="Step closer to NFL Survivor"><span class="mat"><span class="canvas"><img src="shots/nfl-survivor.webp?v=29dde075" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://nfl-survivor-coral.vercel.app/" target="_blank" rel="noopener">NFL Survivor</a><span class="p-no" aria-hidden="true">10</span><span class="p-desc">One pick. Another week alive.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="the costco gas index two warehouses. one daily comparison." data-href="https://costco-gas-index.vercel.app/" data-host="costco-gas-index.vercel.app" data-no="11" style="--w:290;--ar:4/5;--y:0;--z:26"><button class="frame" type="button" aria-label="Step closer to The Costco Gas Index"><span class="mat"><span class="canvas"><img src="shots/the-costco-gas-index.webp?v=9718844b" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://costco-gas-index.vercel.app/" target="_blank" rel="noopener">The Costco Gas Index</a><span class="p-no" aria-hidden="true">11</span><span class="p-desc">Two warehouses. One daily comparison.</span></figcaption></figure><figure class="piece f-oak" data-name="road construction the northwest metro, torn up." data-href="https://tylerherman19.github.io/is-it-road-construction-season/" data-host="tylerherman19.github.io/is-it-road-construction-season" data-no="12" style="--w:390;--ar:4/3;--y:-26;--z:18"><button class="frame" type="button" aria-label="Step closer to Road Construction"><span class="mat"><span class="canvas"><img src="shots/road-construction.webp?v=223de80d" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/is-it-road-construction-season/" target="_blank" rel="noopener">Road Construction</a><span class="p-no" aria-hidden="true">12</span><span class="p-desc">The northwest metro, torn up.</span></figcaption></figure><figure class="piece f-gold" data-name="plow snowplows across plymouth." data-href="https://tylerherman19.github.io/plow/" data-host="tylerherman19.github.io/plow" data-no="13" style="--w:460;--ar:16/10;--y:14;--z:12"><button class="frame" type="button" aria-label="Step closer to Plow"><span class="mat"><span class="canvas"><img src="shots/plow.webp?v=56675aca" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/plow/" target="_blank" rel="noopener">Plow</a><span class="p-no" aria-hidden="true">13</span><span class="p-desc">Snowplows across Plymouth.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="hopscotch milwaukee buses and the streetcar." data-href="https://tylerherman19.github.io/hopscotch/" data-host="tylerherman19.github.io/hopscotch" data-no="14" style="--w:580;--ar:16/10;--y:-10;--z:8"><button class="frame" type="button" aria-label="Step closer to Hopscotch"><span class="mat"><span class="canvas"><img src="shots/hopscotch.webp?v=8e7f353b" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/hopscotch/" target="_blank" rel="noopener">Hopscotch</a><span class="p-no" aria-hidden="true">14</span><span class="p-desc">Milwaukee buses and the streetcar.</span></figcaption></figure><figure class="piece f-ebony" data-name="coffee prices milwaukee and the twin cities." data-href="https://tylerherman19.github.io/Coffee/" data-host="tylerherman19.github.io/Coffee" data-no="15" style="--w:370;--ar:4/3;--y:22;--z:20"><button class="frame" type="button" aria-label="Step closer to Coffee Prices"><span class="mat"><span class="canvas"><img src="shots/coffee-prices.webp?v=efd26053" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Coffee/" target="_blank" rel="noopener">Coffee Prices</a><span class="p-no" aria-hidden="true">15</span><span class="p-desc">Milwaukee and the Twin Cities.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="milwaukee drinks espresso martinis and spotted cow." data-href="https://tylerherman19.github.io/espresso-martinis/" data-host="tylerherman19.github.io/espresso-martinis" data-no="16" style="--w:270;--ar:4/5;--y:-16;--z:28"><button class="frame" type="button" aria-label="Step closer to Milwaukee Drinks"><span class="mat"><span class="canvas"><img src="shots/milwaukee-drinks.webp?v=0e2d483a" width="960" height="1746" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/espresso-martinis/" target="_blank" rel="noopener">Milwaukee Drinks</a><span class="p-no" aria-hidden="true">16</span><span class="p-desc">Espresso martinis and Spotted Cow.</span></figcaption></figure><figure class="piece f-ebony" data-name="cheese curd tour six stops through milwaukee." data-href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" data-host="tylerherman19.github.io/milwaukee-cheese-curd-tour-2026" data-no="17" style="--w:480;--ar:16/10;--y:12;--z:12"><button class="frame" type="button" aria-label="Step closer to Cheese Curd Tour"><span class="mat"><span class="canvas"><img src="shots/cheese-curd-tour.webp?v=eb3f7443" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" target="_blank" rel="noopener">Cheese Curd Tour</a><span class="p-no" aria-hidden="true">17</span><span class="p-desc">Six stops through Milwaukee.</span></figcaption></figure><figure class="piece f-gold" data-name="doors open mke milwaukee, one building at a time." data-href="https://tylerherman19.github.io/MKE-Tour/" data-host="tylerherman19.github.io/MKE-Tour" data-no="18" style="--w:380;--ar:16/10;--y:-26;--z:20"><button class="frame" type="button" aria-label="Step closer to Doors Open MKE"><span class="mat"><span class="canvas"><img src="shots/doors-open-mke.webp?v=45467b7a" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/MKE-Tour/" target="_blank" rel="noopener">Doors Open MKE</a><span class="p-no" aria-hidden="true">18</span><span class="p-desc">Milwaukee, one building at a time.</span></figcaption></figure></div><div class="row"><figure class="piece f-oak" data-name="boat watch watch for an open reservation." data-href="https://boats-tau.vercel.app/" data-host="boats-tau.vercel.app" data-no="19" style="--w:380;--ar:4/3;--y:18;--z:18"><button class="frame" type="button" aria-label="Step closer to Boat Watch"><span class="mat"><span class="canvas"><img src="shots/boat-watch.webp?v=3bbac4bb" width="960" height="974" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://boats-tau.vercel.app/" target="_blank" rel="noopener">Boat Watch</a><span class="p-no" aria-hidden="true">19</span><span class="p-desc">Watch for an open reservation.</span></figcaption></figure><figure class="piece f-ebony" data-name="walk to win the sperax april fools project." data-href="http://speraxchallenge.com/" data-host="speraxchallenge.com" data-no="20" style="--w:290;--ar:4/5;--y:-12;--z:26"><button class="frame" type="button" aria-label="Step closer to Walk to Win"><span class="mat"><span class="canvas"><img src="shots/walk-to-win.webp?v=d25d6e17" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="http://speraxchallenge.com/" target="_blank" rel="noopener">Walk to Win</a><span class="p-no" aria-hidden="true">20</span><span class="p-desc">The Sperax April Fools project.</span></figcaption></figure><figure class="piece f-gold" data-name="vibe trading a paper-trading research desk." data-href="https://vibe-trading-bice.vercel.app/" data-host="vibe-trading-bice.vercel.app" data-no="21" style="--w:480;--ar:16/10;--y:0;--z:10"><button class="frame" type="button" aria-label="Step closer to Vibe Trading"><span class="mat"><span class="canvas"><img src="shots/vibe-trading.webp?v=e9c86880" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://vibe-trading-bice.vercel.app/" target="_blank" rel="noopener">Vibe Trading</a><span class="p-no" aria-hidden="true">21</span><span class="p-desc">A paper-trading research desk.</span></figcaption></figure></div></div></section><p id="search-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><p id="empty" hidden>No projects match that search.</p></div></main>
+<div class="actions"><label class="pill search"><span class="search-ico"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.5"/><path d="M10.4 10.4 14 14"/></svg></span><span class="sr-only">Find a project</span><input id="search" type="search" placeholder="Find a project" autocomplete="off" spellcheck="false" enterkeyhint="search"><kbd class="search-key" aria-hidden="true" title="Press / to search">/</kbd><button type="button" class="search-clear" aria-label="Clear search" hidden><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg></button></label></div></section>
+<div id="library"><p class="sr-only">Each book opens to a page about the project, with a link to the website. The shelf drifts slowly and stops while you hover or use Tab to browse. Drag or swipe it to move it.</p><section class="collection"><div class="shelf" aria-label="Project shelf"><div class="rail"><article class="volume" data-name="berkshire meetings town meetings and public records." data-title="Berkshire Meetings" data-desc="Town meetings and public records." data-no="01" data-shot="shots/berkshire-meetings.webp?v=d137e329" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/berkshire-meetings" style="--paper:#2e4a3b;--cover-ink:#f1e8d2;--t:34px;--dh:0px"><a class="book serif" href="https://tylerherman19.github.io/berkshire-meetings/" target="_blank" rel="noopener" aria-label="Open Berkshire Meetings"><div class="face cover"><div class="cover-top"><span>TH / 01</span><span>PROJECTS</span></div><h3>Berkshire Meetings</h3><div class="cover-image"><img src="covers/berkshire-meetings.webp?v=07ec978a" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Town meetings and public records.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="ask madison what people want their city to change." data-title="Ask Madison" data-desc="What people want their city to change." data-no="02" data-shot="shots/ask-madison.webp?v=c33f286b" data-iw="960" data-ih="1647" data-host="tylerherman19.github.io/ask-madison" style="--paper:#efe4cb;--cover-ink:#1d2b44;--t:26px;--dh:18px"><a class="book" href="https://tylerherman19.github.io/ask-madison/" target="_blank" rel="noopener" aria-label="Open Ask Madison"><div class="face cover"><div class="cover-top"><span>TH / 02</span><span>PROJECTS</span></div><h3>Ask Madison</h3><div class="cover-image"><img src="covers/ask-madison.webp?v=8286473e" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>What people want their city to change.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="assembly district 76 the democratic primary, ward by ward." data-title="Assembly District 76" data-desc="The Democratic primary, ward by ward." data-no="03" data-shot="shots/assembly-district-76.webp?v=170cb5b0" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Ad76" style="--paper:#1f3a8a;--cover-ink:#f4efe4;--t:30px;--dh:-8px"><a class="book" href="https://tylerherman19.github.io/Ad76/" target="_blank" rel="noopener" aria-label="Open Assembly District 76"><div class="face cover"><div class="cover-top"><span>TH / 03</span><span>PROJECTS</span></div><h3>Assembly District 76</h3><div class="cover-image"><img src="covers/assembly-district-76.webp?v=1f9e8414" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The Democratic primary, ward by ward.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="dane county war room election results across dane county." data-title="Dane County War Room" data-desc="Election results across Dane County." data-no="04" data-shot="shots/dane-county-war-room.webp?v=968c7c6f" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/dane-county-war-room" style="--paper:#c2362c;--cover-ink:#fbefe2;--t:38px;--dh:10px"><a class="book" href="https://tylerherman19.github.io/dane-county-war-room/" target="_blank" rel="noopener" aria-label="Open Dane County War Room"><div class="face cover"><div class="cover-top"><span>TH / 04</span><span>PROJECTS</span></div><h3>Dane County War Room</h3><div class="cover-image"><img src="covers/dane-county-war-room.webp?v=1707d035" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Election results across Dane County.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="plymouth mayor a map of the 2026 mayor’s race." data-title="Plymouth Mayor" data-desc="A map of the 2026 mayor’s race." data-no="05" data-shot="shots/plymouth-mayor.webp?v=179949c0" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/PlymouthMap" style="--paper:#ecc64c;--cover-ink:#1d1c18;--t:28px;--dh:-14px"><a class="book serif" href="https://tylerherman19.github.io/PlymouthMap/" target="_blank" rel="noopener" aria-label="Open Plymouth Mayor"><div class="face cover"><div class="cover-top"><span>TH / 05</span><span>PROJECTS</span></div><h3>Plymouth Mayor</h3><div class="cover-image"><img src="covers/plymouth-mayor.webp?v=e24df9c0" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A map of the 2026 mayor’s race.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="candidate research a public-record candidate monitor." data-title="Candidate Research" data-desc="A public-record candidate monitor." data-no="06" data-shot="shots/candidate-research.webp?v=4deeae67" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/CandidateResearch" style="--paper:#1c1c1b;--cover-ink:#f1ece2;--t:32px;--dh:6px"><a class="book" href="https://tylerherman19.github.io/CandidateResearch/" target="_blank" rel="noopener" aria-label="Open Candidate Research"><div class="face cover"><div class="cover-top"><span>TH / 06</span><span>PROJECTS</span></div><h3>Candidate Research</h3><div class="cover-image"><img src="covers/candidate-research.webp?v=562c55b9" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A public-record candidate monitor.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="ticketline find an event. watch its price." data-title="Ticketline" data-desc="Find an event. Watch its price." data-no="07" data-shot="shots/ticketline.webp?v=fa5a45fb" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Tickets" style="--paper:#eba9b6;--cover-ink:#2b1520;--t:24px;--dh:-4px"><a class="book serif" href="https://tylerherman19.github.io/Tickets/" target="_blank" rel="noopener" aria-label="Open Ticketline"><div class="face cover"><div class="cover-top"><span>TH / 07</span><span>PROJECTS</span></div><h3>Ticketline</h3><div class="cover-image"><img src="covers/ticketline.webp?v=1de12f43" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Find an event. Watch its price.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="the model an nfl forecast desk." data-title="The Model" data-desc="An NFL forecast desk." data-no="08" data-shot="shots/the-model.webp?v=e66b465d" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Sport3" style="--paper:#1f5c58;--cover-ink:#f1ebdc;--t:34px;--dh:14px"><a class="book" href="https://tylerherman19.github.io/Sport3/" target="_blank" rel="noopener" aria-label="Open The Model"><div class="face cover"><div class="cover-top"><span>TH / 08</span><span>PROJECTS</span></div><h3>The Model</h3><div class="cover-image"><img src="covers/the-model.webp?v=e6758ac5" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>An NFL forecast desk.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="madness college basketball survivor." data-title="Madness" data-desc="College basketball survivor." data-no="09" data-shot="shots/madness.webp?v=aa3d50a8" data-iw="960" data-ih="1156" data-host="madness-cyan.vercel.app" style="--paper:#dc6a2e;--cover-ink:#fff4e6;--t:28px;--dh:-10px"><a class="book" href="https://madness-cyan.vercel.app/" target="_blank" rel="noopener" aria-label="Open Madness"><div class="face cover"><div class="cover-top"><span>TH / 09</span><span>PROJECTS</span></div><h3>Madness</h3><div class="cover-image"><img src="covers/madness.webp?v=79c9299c" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>College basketball survivor.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="nfl survivor one pick. another week alive." data-title="NFL Survivor" data-desc="One pick. Another week alive." data-no="10" data-shot="shots/nfl-survivor.webp?v=29dde075" data-iw="960" data-ih="1800" data-host="nfl-survivor-coral.vercel.app" style="--paper:#f3eee4;--cover-ink:#131313;--t:30px;--dh:4px"><a class="book serif" href="https://nfl-survivor-coral.vercel.app/" target="_blank" rel="noopener" aria-label="Open NFL Survivor"><div class="face cover"><div class="cover-top"><span>TH / 10</span><span>PROJECTS</span></div><h3>NFL Survivor</h3><div class="cover-image"><img src="covers/nfl-survivor.webp?v=611e6374" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>One pick. Another week alive.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="the costco gas index two warehouses. one daily comparison." data-title="The Costco Gas Index" data-desc="Two warehouses. One daily comparison." data-no="11" data-shot="shots/the-costco-gas-index.webp?v=9718844b" data-iw="960" data-ih="1800" data-host="costco-gas-index.vercel.app" style="--paper:#b52b2b;--cover-ink:#fff6ee;--t:36px;--dh:20px"><a class="book" href="https://costco-gas-index.vercel.app/" target="_blank" rel="noopener" aria-label="Open The Costco Gas Index"><div class="face cover"><div class="cover-top"><span>TH / 11</span><span>PROJECTS</span></div><h3>The Costco Gas Index</h3><div class="cover-image"><img src="covers/the-costco-gas-index.webp?v=59bf700d" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Two warehouses. One daily comparison.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="road construction the northwest metro, torn up." data-title="Road Construction" data-desc="The northwest metro, torn up." data-no="12" data-shot="shots/road-construction.webp?v=223de80d" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/is-it-road-construction-season" style="--paper:#d9a634;--cover-ink:#1c1a14;--t:26px;--dh:-6px"><a class="book" href="https://tylerherman19.github.io/is-it-road-construction-season/" target="_blank" rel="noopener" aria-label="Open Road Construction"><div class="face cover"><div class="cover-top"><span>TH / 12</span><span>PROJECTS</span></div><h3>Road Construction</h3><div class="cover-image"><img src="covers/road-construction.webp?v=b485be75" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The northwest metro, torn up.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="plow snowplows across plymouth." data-title="Plow" data-desc="Snowplows across Plymouth." data-no="13" data-shot="shots/plow.webp?v=56675aca" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/plow" style="--paper:#bfd5e0;--cover-ink:#13222b;--t:30px;--dh:-16px"><a class="book serif" href="https://tylerherman19.github.io/plow/" target="_blank" rel="noopener" aria-label="Open Plow"><div class="face cover"><div class="cover-top"><span>TH / 13</span><span>PROJECTS</span></div><h3>Plow</h3><div class="cover-image"><img src="covers/plow.webp?v=a015ee13" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Snowplows across Plymouth.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="hopscotch milwaukee buses and the streetcar." data-title="Hopscotch" data-desc="Milwaukee buses and the streetcar." data-no="14" data-shot="shots/hopscotch.webp?v=8e7f353b" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/hopscotch" style="--paper:#2f4bd0;--cover-ink:#ffffff;--t:32px;--dh:8px"><a class="book" href="https://tylerherman19.github.io/hopscotch/" target="_blank" rel="noopener" aria-label="Open Hopscotch"><div class="face cover"><div class="cover-top"><span>TH / 14</span><span>PROJECTS</span></div><h3>Hopscotch</h3><div class="cover-image"><img src="covers/hopscotch.webp?v=1cad7c5f" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee buses and the streetcar.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="coffee prices milwaukee and the twin cities." data-title="Coffee Prices" data-desc="Milwaukee and the Twin Cities." data-no="15" data-shot="shots/coffee-prices.webp?v=efd26053" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/Coffee" style="--paper:#6b4029;--cover-ink:#f5e6d1;--t:30px;--dh:12px"><a class="book serif" href="https://tylerherman19.github.io/Coffee/" target="_blank" rel="noopener" aria-label="Open Coffee Prices"><div class="face cover"><div class="cover-top"><span>TH / 15</span><span>PROJECTS</span></div><h3>Coffee Prices</h3><div class="cover-image"><img src="covers/coffee-prices.webp?v=96b007e8" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee and the Twin Cities.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="milwaukee drinks espresso martinis and spotted cow." data-title="Milwaukee Drinks" data-desc="Espresso martinis and Spotted Cow." data-no="16" data-shot="shots/milwaukee-drinks.webp?v=0e2d483a" data-iw="960" data-ih="1746" data-host="tylerherman19.github.io/espresso-martinis" style="--paper:#6e1f2f;--cover-ink:#f6e4da;--t:26px;--dh:-8px"><a class="book" href="https://tylerherman19.github.io/espresso-martinis/" target="_blank" rel="noopener" aria-label="Open Milwaukee Drinks"><div class="face cover"><div class="cover-top"><span>TH / 16</span><span>PROJECTS</span></div><h3>Milwaukee Drinks</h3><div class="cover-image"><img src="covers/milwaukee-drinks.webp?v=4b09ec69" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Espresso martinis and Spotted Cow.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="cheese curd tour six stops through milwaukee." data-title="Cheese Curd Tour" data-desc="Six stops through Milwaukee." data-no="17" data-shot="shots/cheese-curd-tour.webp?v=eb3f7443" data-iw="960" data-ih="1800" data-host="tylerherman19.github.io/milwaukee-cheese-curd-tour-2026" style="--paper:#f2cf4b;--cover-ink:#2a1d0c;--t:34px;--dh:2px"><a class="book" href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" target="_blank" rel="noopener" aria-label="Open Cheese Curd Tour"><div class="face cover"><div class="cover-top"><span>TH / 17</span><span>PROJECTS</span></div><h3>Cheese Curd Tour</h3><div class="cover-image"><img src="covers/cheese-curd-tour.webp?v=6186c9bf" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Six stops through Milwaukee.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="doors open mke milwaukee, one building at a time." data-title="Doors Open MKE" data-desc="Milwaukee, one building at a time." data-no="18" data-shot="shots/doors-open-mke.webp?v=45467b7a" data-iw="960" data-ih="600" data-host="tylerherman19.github.io/MKE-Tour" style="--paper:#ede5d3;--cover-ink:#13202e;--t:38px;--dh:18px"><a class="book serif" href="https://tylerherman19.github.io/MKE-Tour/" target="_blank" rel="noopener" aria-label="Open Doors Open MKE"><div class="face cover"><div class="cover-top"><span>TH / 18</span><span>PROJECTS</span></div><h3>Doors Open MKE</h3><div class="cover-image"><img src="covers/doors-open-mke.webp?v=167d90f2" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Milwaukee, one building at a time.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="boat watch watch for an open reservation." data-title="Boat Watch" data-desc="Watch for an open reservation." data-no="19" data-shot="shots/boat-watch.webp?v=3bbac4bb" data-iw="960" data-ih="974" data-host="boats-tau.vercel.app" style="--paper:#7fb1d5;--cover-ink:#0f1d2a;--t:26px;--dh:-12px"><a class="book" href="https://boats-tau.vercel.app/" target="_blank" rel="noopener" aria-label="Open Boat Watch"><div class="face cover"><div class="cover-top"><span>TH / 19</span><span>PROJECTS</span></div><h3>Boat Watch</h3><div class="cover-image"><img src="covers/boat-watch.webp?v=d127b1d8" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>Watch for an open reservation.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="walk to win the sperax april fools project." data-title="Walk to Win" data-desc="The Sperax April Fools project." data-no="20" data-shot="shots/walk-to-win.webp?v=d25d6e17" data-iw="960" data-ih="1800" data-host="speraxchallenge.com" style="--paper:#141414;--cover-ink:#dff25a;--t:30px;--dh:6px"><a class="book" href="http://speraxchallenge.com/" target="_blank" rel="noopener" aria-label="Open Walk to Win"><div class="face cover"><div class="cover-top"><span>TH / 20</span><span>PROJECTS</span></div><h3>Walk to Win</h3><div class="cover-image"><img src="covers/walk-to-win.webp?v=9d3cdb3a" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>The Sperax April Fools project.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article><article class="volume" data-name="vibe trading a paper-trading research desk." data-title="Vibe Trading" data-desc="A paper-trading research desk." data-no="21" data-shot="shots/vibe-trading.webp?v=e9c86880" data-iw="960" data-ih="600" data-host="vibe-trading-bice.vercel.app" style="--paper:#3f7d4b;--cover-ink:#f3f0e6;--t:32px;--dh:-4px"><a class="book serif" href="https://vibe-trading-bice.vercel.app/" target="_blank" rel="noopener" aria-label="Open Vibe Trading"><div class="face cover"><div class="cover-top"><span>TH / 21</span><span>PROJECTS</span></div><h3>Vibe Trading</h3><div class="cover-image"><img src="covers/vibe-trading.webp?v=9565bfe5" alt="" loading="lazy" decoding="async" width="720" height="548"></div><p>A paper-trading research desk.</p><div class="cover-bottom"><span>TYLER HERMAN</span><span aria-hidden="true"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span></div></div><div class="face edge" aria-hidden="true"></div><div class="face top" aria-hidden="true"></div><div class="face spine" aria-hidden="true"></div><div class="face back" aria-hidden="true"></div><div class="shade" aria-hidden="true"></div></a></article></div></div><p class="shelf-caption" aria-hidden="true"><span class="c-title"></span><span class="c-desc"></span></p></section><section id="gallery" aria-label="Gallery"><div class="wall"><div class="row"><figure class="piece f-gold" data-name="berkshire meetings town meetings and public records." data-href="https://tylerherman19.github.io/berkshire-meetings/" data-host="tylerherman19.github.io/berkshire-meetings" data-no="01" style="--w:500;--ar:16/10;--y:0;--z:10"><button class="frame" type="button" aria-label="Step closer to Berkshire Meetings"><span class="mat"><span class="canvas"><img src="shots/berkshire-meetings.webp?v=d137e329" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/berkshire-meetings/" target="_blank" rel="noopener">Berkshire Meetings</a><span class="p-no" aria-hidden="true">01</span><span class="p-desc">Town meetings and public records.</span></figcaption></figure><figure class="piece f-oak" data-name="ask madison what people want their city to change." data-href="https://tylerherman19.github.io/ask-madison/" data-host="tylerherman19.github.io/ask-madison" data-no="02" style="--w:290;--ar:4/5;--y:-28;--z:26"><button class="frame" type="button" aria-label="Step closer to Ask Madison"><span class="mat"><span class="canvas"><img src="shots/ask-madison.webp?v=c33f286b" width="960" height="1647" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/ask-madison/" target="_blank" rel="noopener">Ask Madison</a><span class="p-no" aria-hidden="true">02</span><span class="p-desc">What people want their city to change.</span></figcaption></figure><figure class="piece f-gold" data-name="assembly district 76 the democratic primary, ward by ward." data-href="https://tylerherman19.github.io/Ad76/" data-host="tylerherman19.github.io/Ad76" data-no="03" style="--w:380;--ar:4/3;--y:22;--z:18"><button class="frame" type="button" aria-label="Step closer to Assembly District 76"><span class="mat"><span class="canvas"><img src="shots/assembly-district-76.webp?v=170cb5b0" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Ad76/" target="_blank" rel="noopener">Assembly District 76</a><span class="p-no" aria-hidden="true">03</span><span class="p-desc">The Democratic primary, ward by ward.</span></figcaption></figure></div><div class="row"><figure class="piece f-ebony" data-name="dane county war room election results across dane county." data-href="https://tylerherman19.github.io/dane-county-war-room/" data-host="tylerherman19.github.io/dane-county-war-room" data-no="04" style="--w:600;--ar:16/10;--y:0;--z:8"><button class="frame" type="button" aria-label="Step closer to Dane County War Room"><span class="mat"><span class="canvas"><img src="shots/dane-county-war-room.webp?v=968c7c6f" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/dane-county-war-room/" target="_blank" rel="noopener">Dane County War Room</a><span class="p-no" aria-hidden="true">04</span><span class="p-desc">Election results across Dane County.</span></figcaption></figure><figure class="piece f-gold" data-name="plymouth mayor a map of the 2026 mayor’s race." data-href="https://tylerherman19.github.io/PlymouthMap/" data-host="tylerherman19.github.io/PlymouthMap" data-no="05" style="--w:400;--ar:16/10;--y:-34;--z:20"><button class="frame" type="button" aria-label="Step closer to Plymouth Mayor"><span class="mat"><span class="canvas"><img src="shots/plymouth-mayor.webp?v=179949c0" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/PlymouthMap/" target="_blank" rel="noopener">Plymouth Mayor</a><span class="p-no" aria-hidden="true">05</span><span class="p-desc">A map of the 2026 mayor’s race.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="candidate research a public-record candidate monitor." data-href="https://tylerherman19.github.io/CandidateResearch/" data-host="tylerherman19.github.io/CandidateResearch" data-no="06" style="--w:270;--ar:4/5;--y:12;--z:28"><button class="frame" type="button" aria-label="Step closer to Candidate Research"><span class="mat"><span class="canvas"><img src="shots/candidate-research.webp?v=4deeae67" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/CandidateResearch/" target="_blank" rel="noopener">Candidate Research</a><span class="p-no" aria-hidden="true">06</span><span class="p-desc">A public-record candidate monitor.</span></figcaption></figure><figure class="piece f-gold" data-name="ticketline find an event. watch its price." data-href="https://tylerherman19.github.io/Tickets/" data-host="tylerherman19.github.io/Tickets" data-no="07" style="--w:480;--ar:16/10;--y:-18;--z:12"><button class="frame" type="button" aria-label="Step closer to Ticketline"><span class="mat"><span class="canvas"><img src="shots/ticketline.webp?v=fa5a45fb" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Tickets/" target="_blank" rel="noopener">Ticketline</a><span class="p-no" aria-hidden="true">07</span><span class="p-desc">Find an event. Watch its price.</span></figcaption></figure><figure class="piece f-ebony" data-name="the model an nfl forecast desk." data-href="https://tylerherman19.github.io/Sport3/" data-host="tylerherman19.github.io/Sport3" data-no="08" style="--w:340;--ar:4/3;--y:26;--z:22"><button class="frame" type="button" aria-label="Step closer to The Model"><span class="mat"><span class="canvas"><img src="shots/the-model.webp?v=e66b465d" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Sport3/" target="_blank" rel="noopener">The Model</a><span class="p-no" aria-hidden="true">08</span><span class="p-desc">An NFL forecast desk.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="madness college basketball survivor." data-href="https://madness-cyan.vercel.app/" data-host="madness-cyan.vercel.app" data-no="09" style="--w:420;--ar:4/3;--y:-14;--z:16"><button class="frame" type="button" aria-label="Step closer to Madness"><span class="mat"><span class="canvas"><img src="shots/madness.webp?v=aa3d50a8" width="960" height="1156" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://madness-cyan.vercel.app/" target="_blank" rel="noopener">Madness</a><span class="p-no" aria-hidden="true">09</span><span class="p-desc">College basketball survivor.</span></figcaption></figure><figure class="piece f-ebony" data-name="nfl survivor one pick. another week alive." data-href="https://nfl-survivor-coral.vercel.app/" data-host="nfl-survivor-coral.vercel.app" data-no="10" style="--w:560;--ar:16/10;--y:16;--z:10"><button class="frame" type="button" aria-label="Step closer to NFL Survivor"><span class="mat"><span class="canvas"><img src="shots/nfl-survivor.webp?v=29dde075" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://nfl-survivor-coral.vercel.app/" target="_blank" rel="noopener">NFL Survivor</a><span class="p-no" aria-hidden="true">10</span><span class="p-desc">One pick. Another week alive.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="the costco gas index two warehouses. one daily comparison." data-href="https://costco-gas-index.vercel.app/" data-host="costco-gas-index.vercel.app" data-no="11" style="--w:290;--ar:4/5;--y:0;--z:26"><button class="frame" type="button" aria-label="Step closer to The Costco Gas Index"><span class="mat"><span class="canvas"><img src="shots/the-costco-gas-index.webp?v=9718844b" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://costco-gas-index.vercel.app/" target="_blank" rel="noopener">The Costco Gas Index</a><span class="p-no" aria-hidden="true">11</span><span class="p-desc">Two warehouses. One daily comparison.</span></figcaption></figure><figure class="piece f-oak" data-name="road construction the northwest metro, torn up." data-href="https://tylerherman19.github.io/is-it-road-construction-season/" data-host="tylerherman19.github.io/is-it-road-construction-season" data-no="12" style="--w:390;--ar:4/3;--y:-26;--z:18"><button class="frame" type="button" aria-label="Step closer to Road Construction"><span class="mat"><span class="canvas"><img src="shots/road-construction.webp?v=223de80d" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/is-it-road-construction-season/" target="_blank" rel="noopener">Road Construction</a><span class="p-no" aria-hidden="true">12</span><span class="p-desc">The northwest metro, torn up.</span></figcaption></figure><figure class="piece f-gold" data-name="plow snowplows across plymouth." data-href="https://tylerherman19.github.io/plow/" data-host="tylerherman19.github.io/plow" data-no="13" style="--w:460;--ar:16/10;--y:14;--z:12"><button class="frame" type="button" aria-label="Step closer to Plow"><span class="mat"><span class="canvas"><img src="shots/plow.webp?v=56675aca" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/plow/" target="_blank" rel="noopener">Plow</a><span class="p-no" aria-hidden="true">13</span><span class="p-desc">Snowplows across Plymouth.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="hopscotch milwaukee buses and the streetcar." data-href="https://tylerherman19.github.io/hopscotch/" data-host="tylerherman19.github.io/hopscotch" data-no="14" style="--w:580;--ar:16/10;--y:-10;--z:8"><button class="frame" type="button" aria-label="Step closer to Hopscotch"><span class="mat"><span class="canvas"><img src="shots/hopscotch.webp?v=8e7f353b" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/hopscotch/" target="_blank" rel="noopener">Hopscotch</a><span class="p-no" aria-hidden="true">14</span><span class="p-desc">Milwaukee buses and the streetcar.</span></figcaption></figure><figure class="piece f-ebony" data-name="coffee prices milwaukee and the twin cities." data-href="https://tylerherman19.github.io/Coffee/" data-host="tylerherman19.github.io/Coffee" data-no="15" style="--w:370;--ar:4/3;--y:22;--z:20"><button class="frame" type="button" aria-label="Step closer to Coffee Prices"><span class="mat"><span class="canvas"><img src="shots/coffee-prices.webp?v=efd26053" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/Coffee/" target="_blank" rel="noopener">Coffee Prices</a><span class="p-no" aria-hidden="true">15</span><span class="p-desc">Milwaukee and the Twin Cities.</span></figcaption></figure></div><div class="row"><figure class="piece f-gold" data-name="milwaukee drinks espresso martinis and spotted cow." data-href="https://tylerherman19.github.io/espresso-martinis/" data-host="tylerherman19.github.io/espresso-martinis" data-no="16" style="--w:270;--ar:4/5;--y:-16;--z:28"><button class="frame" type="button" aria-label="Step closer to Milwaukee Drinks"><span class="mat"><span class="canvas"><img src="shots/milwaukee-drinks.webp?v=0e2d483a" width="960" height="1746" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/espresso-martinis/" target="_blank" rel="noopener">Milwaukee Drinks</a><span class="p-no" aria-hidden="true">16</span><span class="p-desc">Espresso martinis and Spotted Cow.</span></figcaption></figure><figure class="piece f-ebony" data-name="cheese curd tour six stops through milwaukee." data-href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" data-host="tylerherman19.github.io/milwaukee-cheese-curd-tour-2026" data-no="17" style="--w:480;--ar:16/10;--y:12;--z:12"><button class="frame" type="button" aria-label="Step closer to Cheese Curd Tour"><span class="mat"><span class="canvas"><img src="shots/cheese-curd-tour.webp?v=eb3f7443" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/milwaukee-cheese-curd-tour-2026/" target="_blank" rel="noopener">Cheese Curd Tour</a><span class="p-no" aria-hidden="true">17</span><span class="p-desc">Six stops through Milwaukee.</span></figcaption></figure><figure class="piece f-gold" data-name="doors open mke milwaukee, one building at a time." data-href="https://tylerherman19.github.io/MKE-Tour/" data-host="tylerherman19.github.io/MKE-Tour" data-no="18" style="--w:380;--ar:16/10;--y:-26;--z:20"><button class="frame" type="button" aria-label="Step closer to Doors Open MKE"><span class="mat"><span class="canvas"><img src="shots/doors-open-mke.webp?v=45467b7a" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://tylerherman19.github.io/MKE-Tour/" target="_blank" rel="noopener">Doors Open MKE</a><span class="p-no" aria-hidden="true">18</span><span class="p-desc">Milwaukee, one building at a time.</span></figcaption></figure></div><div class="row"><figure class="piece f-oak" data-name="boat watch watch for an open reservation." data-href="https://boats-tau.vercel.app/" data-host="boats-tau.vercel.app" data-no="19" style="--w:380;--ar:4/3;--y:18;--z:18"><button class="frame" type="button" aria-label="Step closer to Boat Watch"><span class="mat"><span class="canvas"><img src="shots/boat-watch.webp?v=3bbac4bb" width="960" height="974" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://boats-tau.vercel.app/" target="_blank" rel="noopener">Boat Watch</a><span class="p-no" aria-hidden="true">19</span><span class="p-desc">Watch for an open reservation.</span></figcaption></figure><figure class="piece f-ebony" data-name="walk to win the sperax april fools project." data-href="http://speraxchallenge.com/" data-host="speraxchallenge.com" data-no="20" style="--w:290;--ar:4/5;--y:-12;--z:26"><button class="frame" type="button" aria-label="Step closer to Walk to Win"><span class="mat"><span class="canvas"><img src="shots/walk-to-win.webp?v=d25d6e17" width="960" height="1800" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="http://speraxchallenge.com/" target="_blank" rel="noopener">Walk to Win</a><span class="p-no" aria-hidden="true">20</span><span class="p-desc">The Sperax April Fools project.</span></figcaption></figure><figure class="piece f-gold" data-name="vibe trading a paper-trading research desk." data-href="https://vibe-trading-bice.vercel.app/" data-host="vibe-trading-bice.vercel.app" data-no="21" style="--w:480;--ar:16/10;--y:0;--z:10"><button class="frame" type="button" aria-label="Step closer to Vibe Trading"><span class="mat"><span class="canvas"><img src="shots/vibe-trading.webp?v=e9c86880" width="960" height="600" alt="" loading="lazy" decoding="async"></span></span></button><figcaption class="placard"><a class="p-title" href="https://vibe-trading-bice.vercel.app/" target="_blank" rel="noopener">Vibe Trading</a><span class="p-no" aria-hidden="true">21</span><span class="p-desc">A paper-trading research desk.</span></figcaption></figure></div></div></section><p id="search-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p><p id="empty" hidden>No projects match “<span class="empty-q"></span>”.<button type="button" class="empty-clear">Clear search</button></p></div></main>
 <div class="closer" id="closer" hidden><div class="closer-backdrop"></div>
 <div class="closer-body" role="dialog" aria-modal="true" aria-labelledby="closer-title">
 <div class="closer-frame"><div class="frame"><span class="mat"><span class="canvas" tabindex="0" aria-label="Screenshot of the site. Scroll to see more."><img alt=""></span></span></div></div>
@@ -444,19 +502,21 @@ html.lock{overflow:hidden}
 <div class="rhalf right"><div class="rpage"><div class="rrun" aria-hidden="true"><span class="rplate-no"></span><span class="rfolio-r"></span></div>
 <div class="rplate"><span class="rcanvas" tabindex="0" aria-label="Screenshot of the site. Scroll to see more."><img alt=""></span><p class="rcap"></p><p class="rhint">Scroll the picture to see more of the site.</p></div></div></div>
 <div class="rleaf" aria-hidden="true" inert><div class="rleaf-front"><div class="cover-box"></div></div><div class="rleaf-back"></div></div>
+<div class="runder" aria-hidden="true" inert></div><div class="rturn" aria-hidden="true" inert><div class="rface front"></div><div class="rface back"></div></div>
 </div></div>
 <button type="button" class="reader-close" aria-label="Close the book"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button></div>
 <footer><span>Tyler Herman / Projects</span><span>Links checked September 30, 2026</span></footer>
 <script>(()=>{'use strict';
 const reduced=matchMedia('(prefers-reduced-motion:reduce)');
 const DRIFT=26; // px per second along the rail
+const EASE='cubic-bezier(.2,.8,.2,1)';
 const books=new Map(); // volume element -> hover spring
 let running=false,last=0;
 
 const shelves=[...document.querySelectorAll('.shelf')].map((el,i)=>({
   el,rail:el.querySelector('.rail'),caption:el.parentNode.querySelector('.shelf-caption'),
   originals:[...el.querySelectorAll('.volume')],offset:0,cycle:0,loop:true,
-  hover:false,focus:null,target:null,drag:null,fling:0,visible:true,dir:i%2?-1:1
+  hover:false,focus:null,press:null,target:null,drag:null,fling:0,visible:true,dir:i%2?-1:1
 }));
 
 function spring(vol){let s=books.get(vol);if(!s){s={vol,book:vol.querySelector('.book'),x:0,v:0,target:0};books.set(vol,s)}return s}
@@ -535,28 +595,49 @@ function open(sh,vol,on){
   kick();
 }
 
+// A book counts as keyboard-focused only while its focus ring shows. A mouse click, or focus put back after a book closes, doesn't hold it open.
+const ring=el=>{try{return el.matches(':focus-visible')}catch(e){return true}};
+const kbd=v=>{const a=document.activeElement;return !!a&&v.contains(a)&&ring(a)};
+let quiet=false; // true while focus is put back on a book, so the shelf doesn't slide to it
+
 for(const sh of shelves){
   const rail=sh.rail;
-  rail.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||sh.drag)return;const v=e.target.closest('.volume');if(v&&!v.classList.contains('is-active')){for(const o of rail.querySelectorAll('.is-active'))if(o!==v&&!o.contains(document.activeElement))open(sh,o,false);open(sh,v,true)}});
-  rail.addEventListener('pointerout',e=>{if(e.pointerType!=='mouse')return;const v=e.target.closest('.volume');if(v&&!v.contains(e.relatedTarget)&&!v.contains(document.activeElement))open(sh,v,false)});
+  rail.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||sh.drag)return;const v=e.target.closest('.volume');if(v&&!v.classList.contains('is-active')){for(const o of rail.querySelectorAll('.is-active'))if(o!==v&&!kbd(o))open(sh,o,false);open(sh,v,true)}});
+  rail.addEventListener('pointerout',e=>{if(e.pointerType!=='mouse')return;const v=e.target.closest('.volume');if(v&&!v.contains(e.relatedTarget)&&!kbd(v))open(sh,v,false)});
   sh.el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){sh.hover=true}});
   sh.el.addEventListener('pointerleave',()=>{sh.hover=false;kick()});
   rail.addEventListener('focusin',e=>{
-    const v=e.target.closest('.volume');if(!v)return;sh.focus=v;sh.fling=0;open(sh,v,true);
-    if(document.body.classList.contains('index'))return;
+    const v=e.target.closest('.volume');if(!v||!ring(e.target))return;sh.focus=v;sh.fling=0;open(sh,v,true);
+    if(quiet||document.body.classList.contains('index'))return;
     // Bring the focused book to the near end of the shelf.
     const inset=Math.min(sh.cycle?sh.cycle*.8:0,v.offsetWidth*1.5);
     sh.target=v.offsetLeft-inset;if(!sh.loop)sh.target=Math.max(0,sh.target);kick();
   });
-  rail.addEventListener('focusout',e=>{const v=e.target.closest('.volume');if(v&&!v.contains(e.relatedTarget)){open(sh,v,false);if(!rail.contains(e.relatedTarget)){sh.focus=null;kick()}}});
+  rail.addEventListener('focusout',e=>{const v=e.target.closest('.volume');if(v&&!v.contains(e.relatedTarget)){if(v!==sh.press)open(sh,v,false);if(!rail.contains(e.relatedTarget)){sh.focus=null;kick()}}});
+  // Arrow keys move between books; Home and End jump to the ends.
+  rail.addEventListener('keydown',e=>{
+    if(!/^(ArrowLeft|ArrowRight|Home|End)$/.test(e.key)||e.altKey||e.ctrlKey||e.metaKey||document.body.classList.contains('index'))return;
+    const list=sh.originals.filter(o=>!o.hidden),i=list.indexOf(e.target.closest('.volume'));if(i<0)return;
+    const n=e.key==='Home'?0:e.key==='End'?list.length-1:(i+(e.key==='ArrowRight'?1:-1)+list.length)%list.length;
+    e.preventDefault();list[n].querySelector('a.book').focus();
+  });
+  // Two-finger swipes on a trackpad (or Shift + wheel) slide the shelf; vertical scrolling still scrolls the page.
+  sh.el.addEventListener('wheel',e=>{
+    if(document.body.classList.contains('index'))return;
+    const dx=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.shiftKey?e.deltaY:0;if(!dx)return;
+    e.preventDefault();sh.target=null;sh.fling=0;sh.offset+=dx*(e.deltaMode===1?16:1);limit(sh);place(sh);kick();
+  },{passive:false});
 
-  // Drag or swipe to move a shelf.
+  // Drag or swipe to move a shelf. On touch, the book under your finger lifts the way it does under a mouse.
   let moved=false;
-  sh.el.addEventListener('pointerdown',e=>{if(e.button||document.body.classList.contains('index'))return;sh.drag={x:e.clientX,o:sh.offset,t:e.timeStamp,lx:e.clientX,v:0};moved=false;sh.fling=0;sh.target=null});
+  sh.el.addEventListener('pointerdown',e=>{if(e.button||document.body.classList.contains('index'))return;sh.drag={x:e.clientX,o:sh.offset,t:e.timeStamp,lx:e.clientX,v:0};moved=false;sh.fling=0;sh.target=null;
+    const v=e.pointerType!=='mouse'&&e.target.closest('.volume');if(v){sh.press=v;open(sh,v,true)}});
   sh.el.addEventListener('pointermove',e=>{const d=sh.drag;if(!d)return;const dx=e.clientX-d.x;
     if(!moved&&Math.abs(dx)>6){moved=true;sh.el.classList.add('dragging');sh.el.setPointerCapture(e.pointerId);for(const o of sh.rail.querySelectorAll('.is-active'))open(sh,o,false)}
     if(moved){const dt=Math.max(1,e.timeStamp-d.t);d.v=-(e.clientX-d.lx)/dt*1000*1.3;d.t=e.timeStamp;d.lx=e.clientX;sh.offset=d.o-dx*1.3;limit(sh);place(sh)}});
-  const end=()=>{const d=sh.drag;if(!d)return;sh.drag=null;sh.el.classList.remove('dragging');if(moved&&!reduced.matches)sh.fling=Math.max(-2500,Math.min(2500,d.v));kick()};
+  const end=()=>{
+    const v=sh.press;if(v){sh.press=null;setTimeout(()=>{if(!kbd(v))open(sh,v,false)},140)}
+    const d=sh.drag;if(!d)return;sh.drag=null;sh.el.classList.remove('dragging');if(moved&&!reduced.matches)sh.fling=Math.max(-2500,Math.min(2500,d.v));kick()};
   sh.el.addEventListener('pointerup',end);sh.el.addEventListener('pointercancel',end);
   sh.el.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
   sh.el.addEventListener('dragstart',e=>e.preventDefault());
@@ -569,35 +650,86 @@ reduced.addEventListener('change',kick);
 let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{if(view==='shelf')for(const sh of shelves){build(sh);place(sh)}kick()},150)});
 kick();
 
-const search=document.getElementById('search'),status=document.getElementById('search-status');
-search.addEventListener('input',()=>{
+// ---------- Search ----------
+const search=document.getElementById('search'),status=document.getElementById('search-status'),searchBox=search.closest('.search'),
+  clearSearch=searchBox.querySelector('.search-clear'),empty=document.getElementById('empty');
+function filter(){
   const q=search.value.trim().toLocaleLowerCase();let count=0;
   for(const sh of shelves){for(const el of sh.originals){el.hidden=!el.dataset.name.includes(q);if(!el.hidden)count++}
     sh.el.closest('.collection').hidden=!sh.originals.some(v=>!v.hidden);sh.offset=0;build(sh);limit(sh);place(sh)}
   filterGallery(q);
-  document.getElementById('empty').hidden=!!count;
+  searchBox.classList.toggle('filled',!!search.value);clearSearch.hidden=!search.value;
+  empty.querySelector('.empty-q').textContent=search.value.trim();empty.hidden=!!count;
   status.textContent=count?`${count} ${count===1?'project':'projects'} shown.`:'No projects match that search.';kick();
+}
+function resetSearch(){search.value='';filter();search.focus()}
+search.addEventListener('input',filter);
+clearSearch.addEventListener('click',resetSearch);
+empty.querySelector('.empty-clear').addEventListener('click',resetSearch);
+search.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){if(search.value){e.preventDefault();search.value='';filter()}else search.blur()}
+  else if(e.key==='Enter'){
+    // Enter puts the keyboard away, and opens the project when only one matches.
+    e.preventDefault();search.blur();const hits=shelves[0].originals.filter(v=>!v.hidden);
+    if(hits.length===1){if(view==='index')hits[0].querySelector('a.book').click();else openSlug(slug(hits[0]),true)}
+  }
 });
+// "/" or Cmd/Ctrl+K jumps to the search box.
+document.addEventListener('keydown',e=>{
+  if(e.defaultPrevented||!closer.hidden||!reader.hidden)return;
+  const k=e.key.toLowerCase(),typing=e.target.closest&&e.target.closest('input,textarea,select,[contenteditable]');
+  if(k==='/'&&!typing&&!e.metaKey&&!e.ctrlKey&&!e.altKey||k==='k'&&(e.metaKey||e.ctrlKey)&&!e.altKey){e.preventDefault();search.focus();search.select()}
+});
+
 // ---------- Views ----------
-const body=document.body,nav=document.querySelector('.views'),inkEl=nav.querySelector('.views-ink');
+const body=document.body,main=document.querySelector('main'),library=document.getElementById('library'),header=document.querySelector('header'),
+  nav=document.querySelector('.views'),inkEl=nav.querySelector('.views-ink'),theme=document.querySelector('meta[name="theme-color"]');
 let view='gallery';
-function ink(){const b=nav.querySelector('[aria-pressed="true"]');inkEl.style.width=b.offsetWidth+'px';inkEl.style.transform=`translateX(${b.offsetLeft}px)`}
+// instant places the pill without sliding it (first paint, resize, late fonts).
+function ink(instant){
+  const b=nav.querySelector('[aria-pressed="true"]');if(instant)nav.classList.remove('ready');
+  inkEl.style.width=b.offsetWidth+'px';inkEl.style.transform=`translateX(${b.offsetLeft}px)`;
+  if(instant){inkEl.getBoundingClientRect();nav.classList.add('ready')}
+}
+function press(v){for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.view===v));ink()}
 function applyView(v){
   view=v;
   body.classList.toggle('index',v==='index');body.classList.toggle('gallery',v==='gallery');
-  for(const b of nav.querySelectorAll('button'))b.setAttribute('aria-pressed',String(b.dataset.view===v));
-  ink();
+  press(v);theme.content=v==='gallery'?'#ebe2d2':'#f4f2ee';
   for(const [el,s] of books){s.x=s.target=s.v=0;s.book.style.transform='';el.style.transform='';el.classList.remove('is-active')}
   for(const sh of shelves){caption(sh,null);if(v==='shelf'){build(sh);place(sh)}}
   if(v==='gallery')measure();else for(const p of pieces)p.classList.remove('hung');
-  try{history.replaceState(null,'',v==='gallery'?location.pathname:`?view=${v}`)}catch(e){}
+  if(v!=='index')hidePeek();
+  try{history.replaceState(history.state,'',href())}catch(e){}
   kick();
 }
+// The pill slides across while the page dips out and back in. Each view keeps its own scroll position.
+const scrolls={};let nextView=null;
 function setView(v){
-  if(v===view)return;
-  if(document.startViewTransition&&!reduced.matches)document.startViewTransition(()=>applyView(v));else applyView(v);
+  if(v===(nextView||view))return;
+  press(v);
+  if(reduced.matches){scrolls[view]=scrollY;applyView(v);scrollTo(0,scrolls[v]||0);return}
+  if(nextView){nextView=v;return}
+  nextView=v;scrolls[view]=scrollY;
+  const out=main.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-in',fill:'forwards'});
+  out.onfinish=()=>{
+    const to=nextView;nextView=null;applyView(to);scrollTo(0,scrolls[to]||0);stick();
+    main.animate([{opacity:0},{opacity:1}],{duration:380,easing:'ease-out'});
+    library.animate([{translate:'0 16px'},{translate:'0 0'}],{duration:640,easing:EASE});
+    out.cancel();
+  };
 }
 nav.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setView(b.dataset.view)});
+
+// The header frosts over once the page scrolls under it.
+let stuckRaf=0;
+function stick(){stuckRaf=0;header.classList.toggle('stuck',scrollY>2)}
+addEventListener('scroll',()=>{if(!stuckRaf)stuckRaf=requestAnimationFrame(stick)},{passive:true});
+
+// Pictures that haven't arrived yet fade in when they do.
+for(const img of document.querySelectorAll('.canvas img,.cover-image img'))if(!img.complete)img.classList.add('pending');
+const arrived=e=>{const t=e.target;if(t.classList&&t.classList.contains('pending'))t.classList.remove('pending')};
+document.addEventListener('load',arrived,true);document.addEventListener('error',arrived,true);
 
 // ---------- Gallery ----------
 const pieces=[...document.querySelectorAll('.piece')];
@@ -635,14 +767,54 @@ function filterGallery(q){
   }
 }
 
+function lock(on){const de=document.documentElement;if(on&&!de.classList.contains('lock'))de.style.setProperty('--sbw',`${innerWidth-de.clientWidth}px`);de.classList.toggle('lock',on)}
+
+// ---------- Paging gestures ----------
+// Swipe sideways on a touch screen, or two-finger swipe on a trackpad, to page through projects.
+// Pinch-zoomed in, sideways drags are left to the browser so you can pan around.
+if(window.visualViewport)visualViewport.addEventListener('resize',()=>document.documentElement.classList.toggle('zoomed',visualViewport.scale>1.05));
+function swipe(el,ok,go,follow){
+  let s=null,acc=0,held=false,quietAt=-1e9,fired=-1e9,swallow=-1e9;
+  el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||!e.isPrimary||document.documentElement.classList.contains('zoomed')||!ok())return;
+    s={id:e.pointerId,x:e.clientX,y:e.clientY,lx:e.clientX,lt:e.timeStamp,v:0,dx:0,on:false}});
+  el.addEventListener('pointermove',e=>{
+    if(!s||e.pointerId!==s.id)return;const dx=e.clientX-s.x,dy=e.clientY-s.y;
+    if(!s.on){
+      if(Math.abs(dy)>10&&Math.abs(dy)>Math.abs(dx)){s=null;return}
+      if(Math.abs(dx)<10)return;
+      s.on=true;s.x+=Math.sign(dx)*10;try{el.setPointerCapture(e.pointerId)}catch(_){}
+    }
+    const dt=e.timeStamp-s.lt;if(dt>0){s.v=.7*(e.clientX-s.lx)/dt+.3*s.v;s.lx=e.clientX;s.lt=e.timeStamp}
+    s.dx=e.clientX-s.x;if(follow)follow(s.dx);
+  });
+  const end=e=>{
+    if(!s||e.pointerId!==s.id)return;const {on,dx,v}=s;s=null;if(!on)return;swallow=e.timeStamp;
+    if(e.type==='pointerup'&&(Math.abs(dx)>70||Math.abs(v)>.45&&Math.sign(v)===Math.sign(dx)))go(dx<0?1:-1,dx);else if(follow)follow(0,true);
+  };
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
+  // A swipe that ends over a button or the backdrop shouldn't also click it.
+  el.addEventListener('click',e=>{if(e.timeStamp-swallow<400){e.preventDefault();e.stopPropagation()}},true);
+  // One page per swipe: after a turn, the rest of that gesture and its momentum are ignored until the wheel goes quiet.
+  el.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaX)<=Math.abs(e.deltaY))return;e.preventDefault();
+    const t=e.timeStamp;if(t-quietAt>220&&t-fired>500){held=false;acc=0}quietAt=t;
+    if(held||!ok())return;acc+=e.deltaX;if(Math.abs(acc)>36){held=true;fired=t;go(acc>0?1:-1,0)}
+  },{passive:false});
+}
+// Scrolling anywhere over an open project scrolls its screenshot.
+function wheelTo(scroller,host,ok){
+  host.addEventListener('wheel',e=>{
+    if(Math.abs(e.deltaY)<=Math.abs(e.deltaX)||scroller.contains(e.target)||!ok())return;e.preventDefault();
+    const dy=e.deltaY*(e.deltaMode===1?16:1);scroller.scrollBy({top:dy,behavior:Math.abs(dy)>=50?'smooth':'auto'});
+  },{passive:false});
+}
+
 // ---------- Step closer ----------
 const closer=document.getElementById('closer'),cBody=closer.querySelector('.closer-body'),cWrap=closer.querySelector('.closer-frame'),
   cCanvas=closer.querySelector('.canvas'),cImg=cCanvas.querySelector('img'),card=closer.querySelector('.closer-card'),
   backdrop=closer.querySelector('.closer-backdrop'),visit=closer.querySelector('.closer-visit');
-const EASE='cubic-bezier(.2,.8,.2,1)';
-let current=null,returnFocus=null,busy=false;
+let current=null,returnFocus=null,busy=false,cAfter=null;
 const shown=()=>pieces.filter(p=>!p.hidden);
-const ratio=p=>{const [w,h]=p.style.getPropertyValue('--ar').split('/').map(Number);return w/h};
 
 function fill(p){
   const img=p.querySelector('img'),list=shown();
@@ -669,12 +841,15 @@ function flip(from,to,dir){
   const s=from.width/to.width,t=`translate(${from.left-to.left}px,${from.top-to.top}px) scale(${s})`;
   return cWrap.animate(dir>0?[{transform:t},{transform:'none'}]:[{transform:'none'},{transform:t}],{duration:dir>0?760:560,easing:dir>0?EASE:'cubic-bezier(.4,0,.2,1)',fill:'both'});
 }
-function openCloser(p){
+// A close asked for mid-animation (Esc, Back, a tap on the backdrop) runs as soon as the animation ends.
+function cRun(){const f=cAfter;cAfter=null;if(f)f()}
+function openCloser(p,push=true){
   if(busy)return;busy=true;current=p;returnFocus=document.activeElement;
-  fill(p);closer.hidden=false;document.documentElement.classList.add('lock');size();
+  fill(p);closer.hidden=false;closer.scrollTop=0;lock(true);size();
+  if(push)go(p);else title(p);
   const from=p.querySelector('.frame').getBoundingClientRect(),to=cWrap.getBoundingClientRect();
   p.classList.add('lifted');
-  const done=()=>{busy=false;visit.focus({preventScroll:true})};
+  const done=()=>{busy=false;visit.focus({preventScroll:true});cRun()};
   if(reduced.matches)return done();
   backdrop.animate([{opacity:0},{opacity:1}],{duration:520,easing:'ease-out'});
   card.animate([{opacity:0,transform:'translateY(18px)'},{opacity:1,transform:'none'}],{duration:620,delay:260,easing:EASE,fill:'backwards'});
@@ -682,9 +857,10 @@ function openCloser(p){
   const a=flip(from,to,1);a.onfinish=()=>{a.cancel();done()};
 }
 function closeCloser(){
-  if(busy||closer.hidden)return;busy=true;
+  if(closer.hidden)return;if(busy){cAfter=closeCloser;return}busy=true;
+  cDrag(0);
   const p=current,to=cWrap.getBoundingClientRect(),from=p.querySelector('.frame').getBoundingClientRect();
-  const finish=()=>{closer.hidden=true;document.documentElement.classList.remove('lock');p.classList.remove('lifted');busy=false;
+  const finish=()=>{closer.hidden=true;lock(false);p.classList.remove('lifted');busy=false;cAfter=null;untitle();
     (returnFocus&&p.contains(returnFocus)?returnFocus:p.querySelector('.frame')).focus({preventScroll:true})};
   if(reduced.matches)return finish();
   backdrop.animate([{opacity:1},{opacity:0}],{duration:460,easing:'ease-in',fill:'forwards'});
@@ -693,26 +869,40 @@ function closeCloser(){
   const a=flip(from,to,-1);
   a.onfinish=()=>{finish();for(const x of closer.getAnimations({subtree:true}))x.cancel();a.cancel()};
 }
-async function step(dir){
+// The picture and card follow a finger sideways; let go short of a page and they settle back.
+const fade=x=>Math.max(0,1-Math.abs(x)/360);
+function cDrag(dx,snap){
+  for(const el of [cWrap,card]){
+    if(dx){el.style.transform=`translateX(${dx}px)`;el.style.opacity=fade(dx);continue}
+    const t=el.style.transform,o=el.style.opacity;el.style.transform=el.style.opacity='';
+    if(snap&&t&&!reduced.matches)el.animate([{transform:t,opacity:o||1},{transform:'none',opacity:1}],{duration:380,easing:EASE});
+  }
+}
+// from is where a swipe let go, so the outgoing project carries on from under the finger.
+async function step(dir,from=0){
   if(busy)return;const list=shown(),next=list[(list.indexOf(current)+dir+list.length)%list.length];
-  if(!next||next===current)return;busy=true;
-  const out=reduced.matches?[]:[cWrap,card].map(el=>el.animate([{opacity:1,transform:'none'},{opacity:0,transform:`translateX(${-dir*36}px)`}],{duration:200,easing:'ease-in',fill:'forwards'}));
+  if(!next||next===current)return cDrag(0,true);
+  busy=true;
+  const out=reduced.matches?[]:[cWrap,card].map(el=>el.animate([{opacity:fade(from),transform:`translateX(${from}px)`},{opacity:0,transform:`translateX(${from-dir*60}px)`}],{duration:from?170:200,easing:from?'ease-out':'ease-in',fill:'forwards'}));
+  cDrag(0);
   await Promise.all(out.map(a=>a.finished));
   current.classList.remove('lifted');current=next;next.classList.add('lifted');
-  fill(next);size();next.scrollIntoView({block:'center'});
+  fill(next);size();next.scrollIntoView({block:'center'});swap(next);
   out.forEach(a=>a.cancel());
-  if(!reduced.matches)for(const el of [cWrap,card])el.animate([{opacity:0,transform:`translateX(${dir*36}px)`},{opacity:1,transform:'none'}],{duration:460,easing:EASE});
-  busy=false;
+  if(!reduced.matches)for(const el of [cWrap,card])el.animate([{opacity:0,transform:`translateX(${dir*48}px)`},{opacity:1,transform:'none'}],{duration:460,easing:EASE});
+  busy=false;cRun();
 }
 for(const p of pieces)p.querySelector('.frame').addEventListener('click',()=>openCloser(p));
-backdrop.addEventListener('click',closeCloser);
-closer.querySelector('.closer-close').addEventListener('click',closeCloser);
+backdrop.addEventListener('click',cClose);
+closer.querySelector('.closer-close').addEventListener('click',cClose);
 closer.querySelector('.c-prev').addEventListener('click',()=>step(-1));
 closer.querySelector('.c-next').addEventListener('click',()=>step(1));
-closer.addEventListener('click',e=>{if(e.target===cBody)closeCloser()});
+closer.addEventListener('click',e=>{if(e.target===cBody)cClose()});
+swipe(closer,()=>!busy,(dir,from)=>step(dir,from||0),(dx,snap)=>{if(!busy)cDrag(dx,snap)});
+wheelTo(cCanvas,closer,()=>closer.scrollHeight<=closer.clientHeight+1);
 document.addEventListener('keydown',e=>{
   if(closer.hidden)return;
-  if(e.key==='Escape'){e.preventDefault();closeCloser()}
+  if(e.key==='Escape'){e.preventDefault();cClose()}
   else if(e.key==='ArrowRight'&&e.target!==cCanvas){e.preventDefault();step(1)}
   else if(e.key==='ArrowLeft'&&e.target!==cCanvas){e.preventDefault();step(-1)}
   else if(e.key==='Tab'){ // keep focus inside the dialog
@@ -721,19 +911,23 @@ document.addEventListener('keydown',e=>{
     if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus()}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus()}
   }
 });
-addEventListener('resize',()=>{if(view==='gallery')measure();if(!closer.hidden)size();ink()});
-if(document.fonts)document.fonts.ready.then(ink);
+addEventListener('resize',()=>{if(view==='gallery')measure();if(!closer.hidden)size();ink(true)});
+if(document.fonts)document.fonts.ready.then(()=>ink(true));
 
 
 // ---------- Open book (shelf) ----------
-const reader=document.getElementById('reader'),rbook=reader.querySelector('.rbook'),rLeaf=reader.querySelector('.rleaf'),
+const reader=document.getElementById('reader'),rbook=reader.querySelector('.rbook'),rStage=reader.querySelector('.reader-stage'),rLeaf=reader.querySelector('.rleaf'),
   rCoverBox=reader.querySelector('.rleaf-front .cover-box'),rLeafBack=reader.querySelector('.rleaf-back'),
-  rLeft=rbook.querySelector(':scope>.rhalf.left'),rBackdrop=reader.querySelector('.reader-backdrop'),
-  rCanvas=reader.querySelector('.rcanvas'),rImg=rCanvas.querySelector('img'),rVisit=reader.querySelector('.rvisit');
+  rLeft=rbook.querySelector(':scope>.rhalf.left'),rRight=rbook.querySelector(':scope>.rhalf.right'),rBackdrop=reader.querySelector('.reader-backdrop'),
+  rCanvas=reader.querySelector('.rcanvas'),rImg=rCanvas.querySelector('img'),rVisit=reader.querySelector('.rvisit'),
+  rUnder=rbook.querySelector('.runder'),rTurn=rbook.querySelector('.rturn'),[rFront,rBack]=rTurn.children;
 const TURN='cubic-bezier(.45,.05,.2,1)';
-let rCur=null,rSrc=null,rBusy=false;
+let rCur=null,rSrc=null,rBusy=false,rAfter=null;
 const rList=()=>shelves[0].originals.filter(v=>!v.hidden);
 const original=v=>v.classList.contains('clone')?shelves[0].originals.find(o=>o.dataset.title===v.dataset.title):v;
+// A copy of one half of the open book, for the cover's inside and for turning pages.
+const page=h=>{const c=h.cloneNode(true);c.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));return c};
+const shade=()=>{const i=document.createElement('i');i.className='rshade';return i};
 
 function rFill(v){
   const list=rList(),i=list.indexOf(v),q=s=>reader.querySelector(s);
@@ -749,14 +943,14 @@ function rFill(v){
   q('.rcap').textContent=`Fig. ${+v.dataset.no}. ${v.dataset.host}`;
   rVisit.href=v.querySelector('a.book').href;
   rImg.src=v.dataset.shot;rImg.width=+v.dataset.iw;rImg.height=+v.dataset.ih;rImg.alt=`Screenshot of ${v.dataset.title}`;
+  rImg.classList.toggle('pending',!rImg.complete);
   rCanvas.style.aspectRatio=`${v.dataset.iw}/${v.dataset.ih}`;rCanvas.scrollTop=0;
   // the cover that swings open is the book from the shelf
   const cover=v.querySelector('.cover').cloneNode(true);cover.removeAttribute('style');
   const wrap=document.createElement('div');wrap.className=v.querySelector('a.book').classList.contains('serif')?'serif':'';wrap.append(cover);
   rCoverBox.replaceChildren(wrap);
   // and its inside is the left page
-  const back=rLeft.cloneNode(true);back.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));
-  rLeafBack.replaceChildren(back);
+  rLeafBack.replaceChildren(page(rLeft));
 }
 function rSize(){
   const g=innerWidth<=600?12:64,W=Math.max(150,Math.min((innerWidth-2*g)/2,(innerHeight-(innerWidth<=600?120:90))/1.46,560));
@@ -765,73 +959,86 @@ function rSize(){
   rCoverBox.style.setProperty('--cbw',`${bw}px`);rCoverBox.style.setProperty('--cbh',`${bh}px`);rCoverBox.style.setProperty('--cz',String(W/bw));
   return W;
 }
-// Where the closed book sits on the shelf, as a transform of the open book.
-function rFrom(vol,W){
+// Where the closed book sits on the shelf, as a transform of the open book. shift makes up for the stage being slid over by that much.
+function rFrom(vol,W,shift=0){
   const B=rbook.getBoundingClientRect(),R=vol.querySelector('.cover').getBoundingClientRect(),s=R.height/(W*1.46);
-  return `translate(${(R.left+(R.width-s*W)/2-B.left-s*W).toFixed(1)}px,${(R.top-B.top).toFixed(1)}px) scale(${s.toFixed(4)})`;
+  return `translate(${(R.left+(R.width-s*W)/2-B.left-s*W+shift).toFixed(1)}px,${(R.top-B.top).toFixed(1)}px) scale(${s.toFixed(4)})`;
 }
 function rSettle(){
   reader.classList.add('settled');reader.classList.remove('anim');
   for(const a of reader.getAnimations({subtree:true}))a.cancel();
 }
-async function openReader(vol){
+function rRun(){const f=rAfter;rAfter=null;if(f)f()}
+async function openReader(vol,push=true){
   if(rBusy)return;rBusy=true;
-  rSrc=vol;rCur=original(vol);rFill(rCur);
-  reader.hidden=false;reader.classList.remove('settled');reader.classList.add('anim');document.documentElement.classList.add('lock');
+  rSrc=vol;rCur=original(vol);rFill(rCur);if(push)go(rCur);else title(rCur);
+  reader.hidden=false;reader.classList.remove('settled');reader.classList.add('anim');lock(true);
   const W=rSize();vol.classList.add('lifted');kick();
   if(!reduced.matches){
     rBackdrop.animate([{opacity:0},{opacity:1}],{duration:600,easing:'ease-out'});
-    reader.querySelector('.reader-close').animate([{opacity:0},{opacity:1}],{duration:400,delay:900,fill:'backwards'});
-    const fly=rbook.animate([{transform:rFrom(vol,W)},{transform:`translateX(${-W/2}px)`}],{duration:720,easing:EASE,fill:'forwards'});
-    await fly.finished;
-    const slide=rbook.animate([{transform:`translateX(${-W/2}px)`},{transform:'none'}],{duration:1050,easing:TURN,fill:'forwards'});
-    rLeaf.animate([{transform:'rotateY(0deg)'},{transform:'rotateY(-180deg)'}],{duration:1050,easing:TURN,fill:'forwards'});
-    await slide.finished;
+    reader.querySelector('.reader-close').animate([{opacity:0},{opacity:1}],{duration:400,delay:800,fill:'backwards'});
+    // The book flies off the shelf to the middle of the screen. As it slows, it slides over and the cover swings open, all in one motion.
+    rbook.animate([{transform:rFrom(vol,W,W/2)},{transform:'none'}],{duration:700,easing:EASE,fill:'forwards'});
+    rStage.animate([{transform:`translateX(${-W/2}px)`},{transform:'none'}],{duration:1000,delay:460,easing:TURN,fill:'both'});
+    await rLeaf.animate([{transform:'rotateY(0deg)'},{transform:'rotateY(-180deg)'}],{duration:1000,delay:460,easing:TURN,fill:'both'}).finished;
   }
-  rSettle();rVisit.focus({preventScroll:true});rBusy=false;
+  rSettle();rVisit.focus({preventScroll:true});rBusy=false;rRun();
 }
 async function closeReader(){
-  if(rBusy||reader.hidden)return;rBusy=true;
+  if(reader.hidden)return;if(rBusy){rAfter=closeReader;return}rBusy=true;
   let src=rSrc;
   if(src.dataset.title!==rCur.dataset.title){ // paged to another project: return it to its own place on the shelf
     src.classList.remove('lifted');src=rCur;const sh=shelves[0];
     sh.target=null;sh.fling=0;sh.offset=src.offsetLeft-Math.min(src.offsetWidth*1.5,innerWidth*.3);limit(sh);place(sh);src.classList.add('lifted');
   }
   const W=rSize();
-  const done=()=>{reader.hidden=true;rSettle();document.documentElement.classList.remove('lock');src.classList.remove('lifted');rBusy=false;
-    src.querySelector('a.book').focus({preventScroll:true});kick()};
+  const done=()=>{reader.hidden=true;rSettle();lock(false);src.classList.remove('lifted');rBusy=false;rAfter=null;untitle();
+    quiet=true;src.querySelector('a.book').focus({preventScroll:true});quiet=false;kick()};
   if(reduced.matches)return done();
-  const back=rLeft.cloneNode(true);back.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));rLeafBack.replaceChildren(back);
+  const to=rFrom(src,W,W/2);
+  rLeafBack.replaceChildren(page(rLeft));
   reader.classList.add('anim');reader.classList.remove('settled');
   reader.querySelector('.reader-close').animate([{opacity:1},{opacity:0}],{duration:200,fill:'forwards'});
-  const shut=rbook.animate([{transform:'none'},{transform:`translateX(${-W/2}px)`}],{duration:850,easing:TURN,fill:'forwards'});
-  rLeaf.animate([{transform:'rotateY(-180deg)'},{transform:'rotateY(0deg)'}],{duration:850,easing:TURN,fill:'forwards'});
-  await shut.finished;
-  rBackdrop.animate([{opacity:1},{opacity:0}],{duration:620,easing:'ease-in',fill:'forwards'});
-  const fly=rbook.animate([{transform:`translateX(${-W/2}px)`},{transform:rFrom(src,W)}],{duration:620,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'});
-  await fly.finished;done();
+  rStage.animate([{transform:'none'},{transform:`translateX(${-W/2}px)`}],{duration:800,easing:TURN,fill:'forwards'});
+  rLeaf.animate([{transform:'rotateY(-180deg)'},{transform:'rotateY(0deg)'}],{duration:800,easing:TURN,fill:'forwards'});
+  rBackdrop.animate([{opacity:1},{opacity:0}],{duration:560,delay:600,easing:'ease-in',fill:'both'});
+  await rbook.animate([{transform:'none'},{transform:to}],{duration:580,delay:620,easing:'cubic-bezier(.4,0,.2,1)',fill:'both'}).finished;
+  done();
 }
+// Paging turns the page over on the spine: forward, the right page turns to the left; back, the left page turns to the right.
 async function rStep(dir){
   if(rBusy)return;const list=rList();if(list.length<2)return;rBusy=true;
-  const next=list[(list.indexOf(rCur)+dir+list.length)%list.length],pages=[...rbook.querySelectorAll(':scope>.rhalf .rpage>*')];
-  if(!reduced.matches)await Promise.all(pages.map(el=>el.animate([{opacity:1},{opacity:0,transform:`translateX(${-dir*.6}em)`}],{duration:180,easing:'ease-in',fill:'forwards'}).finished));
-  rCur=next;rFill(next);
-  for(const el of pages){el.getAnimations().forEach(a=>a.cancel());if(!reduced.matches)el.animate([{opacity:0,transform:`translateX(${dir*.6}em)`},{opacity:1,transform:'none'}],{duration:380,easing:EASE})}
-  rBusy=false;
+  const next=list[(list.indexOf(rCur)+dir+list.length)%list.length],fwd=dir>0;
+  if(reduced.matches){rCur=next;rFill(next);swap(next);rBusy=false;return rRun()}
+  // The outgoing pages keep their project's binding color; the new spread brings its own.
+  const top=rCanvas.scrollTop,oldL=page(rLeft),oldR=page(rRight),paper=rbook.style.getPropertyValue('--paper');
+  for(const c of [oldL,oldR])c.style.setProperty('--paper',paper);
+  rCur=next;rFill(next);swap(next);
+  rbook.dataset.turn=fwd?'next':'prev';
+  rFront.replaceChildren(fwd?oldR:oldL,shade());rBack.replaceChildren(page(fwd?rLeft:rRight),shade());rUnder.replaceChildren(fwd?oldL:oldR);
+  rbook.classList.add('turning');
+  oldR.querySelector('.rcanvas').scrollTop=top;
+  const timing={duration:900,easing:TURN};
+  for(const s of rTurn.querySelectorAll('.rshade'))s.animate([{opacity:0},{opacity:1,offset:.5},{opacity:0}],timing);
+  await rTurn.animate([{transform:'rotateY(0deg)'},{transform:`rotateY(${fwd?-180:180}deg)`}],timing).finished;
+  rbook.classList.remove('turning');rFront.replaceChildren();rBack.replaceChildren();rUnder.replaceChildren();
+  rBusy=false;rRun();
 }
 for(const sh of shelves)sh.rail.addEventListener('click',e=>{
   const a=e.target.closest('a.book');
   if(!a||document.body.classList.contains('index')||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||e.button)return;
   e.preventDefault();openReader(a.closest('.volume'));
 });
-rBackdrop.addEventListener('click',closeReader);
-reader.querySelector('.reader-stage').addEventListener('click',e=>{if(e.target===e.currentTarget)closeReader()});
-reader.querySelector('.reader-close').addEventListener('click',closeReader);
+rBackdrop.addEventListener('click',rClose);
+rStage.addEventListener('click',e=>{if(e.target===e.currentTarget)rClose()});
+reader.querySelector('.reader-close').addEventListener('click',rClose);
 reader.querySelector('.r-prev').addEventListener('click',()=>rStep(-1));
 reader.querySelector('.r-next').addEventListener('click',()=>rStep(1));
+swipe(rStage,()=>!rBusy,dir=>rStep(dir));
+wheelTo(rCanvas,reader,()=>!rBusy);
 document.addEventListener('keydown',e=>{
   if(reader.hidden)return;
-  if(e.key==='Escape'){e.preventDefault();closeReader()}
+  if(e.key==='Escape'){e.preventDefault();rClose()}
   else if(e.key==='ArrowRight'&&e.target!==rCanvas){e.preventDefault();rStep(1)}
   else if(e.key==='ArrowLeft'&&e.target!==rCanvas){e.preventDefault();rStep(-1)}
   else if(e.key==='Tab'){
@@ -842,9 +1049,64 @@ document.addEventListener('keydown',e=>{
 });
 addEventListener('resize',()=>{if(!reader.hidden&&!rBusy)rSize()});
 
-// The gallery is the front door; ?view=shelf or ?view=index opens the others.
+// ---------- Address ----------
+// An open project gets its own history entry (?p=name), so Back closes it and the address can be shared.
+const TITLE=document.title;
+function slug(el){return (el.dataset.shot||el.querySelector('.canvas img').getAttribute('src')).replace(/^.*\/|\.webp.*$/g,'')}
+function href(p){const q=new URLSearchParams();if(view!=='gallery')q.set('view',view);if(p)q.set('p',p);const s=q.toString();return location.pathname+(s?'?'+s:'')}
+function title(el){document.title=`${el.dataset.title||el.querySelector('.p-title').textContent} · Tyler Herman`}
+function untitle(){document.title=TITLE}
+function go(el){title(el);try{history.pushState({p:slug(el)},'',href(slug(el)))}catch(e){}}
+function swap(el){title(el);try{history.replaceState({p:slug(el)},'',href(slug(el)))}catch(e){}}
+// The close button, Esc and the backdrop step back through history when the project has an entry, so they agree with Back.
+function leave(){if(history.state&&history.state.p){history.back();return true}return false}
+function cClose(){if(!leave())closeCloser()}
+function rClose(){if(!leave())closeReader()}
+function openSlug(s,push){
+  if(view==='gallery'){const p=pieces.find(p=>!p.hidden&&slug(p)===s);if(p){p.scrollIntoView({block:'center'});openCloser(p,push)}}
+  else if(view==='shelf'){const sh=shelves[0],v=sh.originals.find(v=>!v.hidden&&slug(v)===s);
+    if(v){sh.target=null;sh.fling=0;sh.offset=v.offsetLeft-Math.min(v.offsetWidth*1.5,innerWidth*.3);limit(sh);place(sh);openReader(v,push)}}
+}
+addEventListener('popstate',e=>{
+  const p=e.state&&e.state.p;
+  if(!p){closeCloser();closeReader();return}
+  if(closer.hidden&&reader.hidden)openSlug(p,false);
+});
+
+// ---------- Index peek ----------
+// In the index, the cover of the row under the mouse floats beside the pointer.
+const peek=document.createElement('div'),peekImg=new Image(),finePointer=matchMedia('(hover:hover) and (pointer:fine)');
+peek.className='peek';peek.setAttribute('aria-hidden','true');peekImg.alt='';peek.append(peekImg);body.append(peek);
+let pv=null,pRaf=0,pLoaded=false;const pt={x:0,y:0},pp={x:0,y:0},pm={x:0,y:0};
+function peekFrame(){
+  pRaf=0;const dx=pt.x-pp.x,dy=pt.y-pp.y;pp.x+=dx*.2;pp.y+=dy*.2;
+  peek.style.transform=`translate3d(${pp.x.toFixed(1)}px,${pp.y.toFixed(1)}px,0) rotate(${Math.max(-6,Math.min(6,dx*.04)).toFixed(2)}deg)`;
+  if(Math.abs(dx)+Math.abs(dy)>.3)pRaf=requestAnimationFrame(peekFrame);
+}
+function showPeek(v){
+  if(!pLoaded){pLoaded=true;for(const o of shelves[0].originals)new Image().src=o.querySelector('.cover-image img').getAttribute('src')}
+  if(v!==pv){pv=v;peekImg.src=v.querySelector('.cover-image img').getAttribute('src');peek.style.setProperty('--paper',v.style.getPropertyValue('--paper'))}
+  const w=peek.offsetWidth,h=peek.offsetHeight;
+  pt.x=pm.x+28+w>innerWidth-12?pm.x-28-w:pm.x+28;pt.y=Math.min(innerHeight-h-12,Math.max(12,pm.y-h/2));
+  if(!peek.classList.contains('on')||reduced.matches){pp.x=pt.x;pp.y=pt.y;peekFrame()}else if(!pRaf)pRaf=requestAnimationFrame(peekFrame);
+  peek.classList.add('on');
+}
+function hidePeek(){pv=null;peek.classList.remove('on')}
+function peekAt(x,y,el){pm.x=x;pm.y=y;const v=view==='index'&&finePointer.matches&&el&&el.closest&&el.closest('#library .volume');if(v)showPeek(v);else hidePeek()}
+library.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')peekAt(e.clientX,e.clientY,e.target)});
+library.addEventListener('pointerleave',hidePeek);
+addEventListener('scroll',()=>{if(pv)peekAt(pm.x,pm.y,document.elementFromPoint(pm.x,pm.y))},{passive:true});
+
+// The gallery is the front door; ?view=shelf or ?view=index opens the others, and ?p=name opens a project.
 try{localStorage.removeItem('view')}catch(e){}
-const startView=new URLSearchParams(location.search).get('view');
-if(startView==='shelf'||startView==='index')applyView(startView);else{measure();ink()}
+const params=new URLSearchParams(location.search),startView=params.get('view'),startP=params.get('p');
+if(startView==='shelf'||startView==='index')applyView(startView);else measure();
+ink(true);stick();
+requestAnimationFrame(()=>requestAnimationFrame(()=>document.documentElement.classList.add('ready')));
+if(startP){
+  // Give the project an entry of its own above the page, so Back closes it rather than leaving the site.
+  try{history.replaceState(null,'',href())}catch(e){}
+  Promise.race([document.fonts?document.fonts.ready:Promise.resolve(),new Promise(r=>setTimeout(r,700))]).then(()=>requestAnimationFrame(()=>openSlug(startP,true)));
+}
 })();
 </script></body></html>
